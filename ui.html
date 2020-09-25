@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Mapbox to Figma</title>
+    <link
+      href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css"
+      rel="stylesheet"
+    />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js"></script>
+    <style>
+      #map {
+        position: relative;
+        width: 100%;
+        height: 300px;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Mapbox to Figma</h2>
+    <p>Mapbox API access token: <input id="" value="" /></p>
+    <p>
+      Mapbox Style URL:
+      <input
+        id="mapStyle"
+        value="mapbox://styles/qatium/ckaf3fzi6200k1ipufjkbt50v"
+      />
+    </p>
+    <button id="get-map">Get Map from Mapbox</button>
+    <button id="draw-map">Draw map to Figma</button>
+    <div id="map">Map here</div>
+    <script>
+      document.getElementById("get-map").onclick = () => {
+        mapboxgl.accessToken =
+          "pk.eyJ1IjoicWF0aXVtIiwiYSI6ImNrM2lrNzE1djA4a3ozY2xjeDFiMzA3b24ifQ.baOd_O4sWca3ma4klyW7Mw";
+        var map = new mapboxgl.Map({
+          container: "map", // container id
+          style:
+            document.getElementById("mapStyle").value ||
+            "mapbox://styles/mapbox/streets-v11", // style URL
+          center: [-74.5, 40], // starting position [lng, lat]
+          zoom: 9, // starting zoom
+        });
+      }
+      document.getElementById("draw-map").onclick = () => {
+        // Retrive statica map form mapbox style 
+        // https://docs.mapbox.com/api/maps/#retrieve-a-static-map-from-a-style
+        let imurl =
+          "https://api.mapbox.com/styles/v1/mapbox/satellite-v9/static/0,0,2/600x600?access_token=pk.eyJ1IjoicWF0aXVtIiwiYSI6ImNrM2lrNzE1djA4a3ozY2xjeDFiMzA3b24ifQ.baOd_O4sWca3ma4klyW7Mw";
+        fetch(imurl)
+          .then((r) => r.arrayBuffer())
+          .then((a) =>
+            parent.postMessage(
+              { pluginMessage: {type: "draw-map", data: new Uint8Array(a)} },
+              "*"
+            )
+          );
+      };
+    </script>
+  </body>
+</html>

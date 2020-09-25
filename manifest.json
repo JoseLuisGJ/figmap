@@ -1,0 +1,7 @@
+{
+  "name": "Pepe Plugin",
+  "id": "888775661209919731",
+  "api": "1.0.0",
+  "main": "code.js",
+  "ui": "ui.html"
+}
