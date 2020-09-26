@@ -11,7 +11,7 @@ figma.ui.onmessage = msg => {
         const rect = figma.createRectangle();
         rect.fills = [{ type: "IMAGE", scaleMode: "FIT", imageHash }];
         figma.currentPage.appendChild(rect);
-        // select the rectangle and focus the viewport
+        // select the rectangle and focus the viewport  
         figma.currentPage.selection = [rect];
         figma.viewport.scrollAndZoomIntoView([rect]);
     }
