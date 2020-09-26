@@ -33,7 +33,7 @@
       let username ;
       let style_id;
       let overlay;
-      let lon = "-77.03968";
+      let lng = "-77.03968";
       let lat = "38.89744";
       let zoom = 9;
       let bearing = 0;
@@ -56,7 +56,7 @@
         map = new mapboxgl.Map({
           container: "map", // container id
           style: `mapbox://styles/${username}/${style_id}`, // style URL
-          center: [lon, lat], // starting position [lng, lat]
+          center: [lng, lat], // starting position [lng, lat]
           zoom: zoom, // starting zoom
         });
       };
@@ -64,7 +64,7 @@
       document.getElementById("draw-map").onclick = () => {
         // Retrive statica map from mapbox style https://docs.mapbox.com/api/maps/#retrieve-a-static-map-from-a-style
         getMapProperties();
-        let imurl = `https://api.mapbox.com/styles/v1/${username}/${style_id}/static/${lon},${lat},${zoom},${bearing},${pitch}/${width}x${height}${retina}?access_token=${accessToken}`;
+        let imurl = `https://api.mapbox.com/styles/v1/${username}/${style_id}/static/${lng},${lat},${zoom},${bearing},${pitch}/${width}x${height}${retina}?access_token=${accessToken}`;
         fetch(imurl)
           .then((r) => r.arrayBuffer())
           .then((a) =>
@@ -80,9 +80,9 @@
         zoom = map.getZoom();
         pitch = map.getPitch();
         bearing = map.getBearing();
-        lon = map.getCenter().lon;
+        lng = map.getCenter().lng;
         lat = map.getCenter().lat;
-        console.log(lon);
+        console.log(lng);
         console.log(lat);
       }
     </script>
