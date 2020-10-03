@@ -2,7 +2,7 @@
 
 The main goal of this plugin is to get any custom styled map from Mapbox and get an image from it to Figma. Then the further steps will be create a data layers feeded by geoJson files or content to draw batched markers and transform them in Figma components.
 
-![Figmap Mockup](https://github.com/ergum/figmap/blob/master/src/app/assets/FigmapMockup.jpg?raw=true)
+![Figmap Mockup](https://github.com/ergum/figmap/blob/master/src/app/assets/FigmapMockup.gif?raw=true) 
 
 
 Template based on [Figma Plugin React Template](https://github.com/nirsky/figma-plugin-react-template) This template contains the react example as shown on [Figma Docs](https://www.figma.com/plugin-docs/intro/), with some structural changes and extra tooling.
