@@ -54,6 +54,9 @@ const App = ({}) => {
       center: [lng, lat], // starting position [lng, lat]
       zoom: zoom // starting zoom
     });
+    map.on("load", function() {
+      map.resize();
+    });
   }, []);
 
   React.useEffect(() => {
@@ -64,33 +67,42 @@ const App = ({}) => {
         console.log(`Figma Says: ${message}`);
       }
     };
+    onGetMap();
   }, []);
 
   return (
-    <div>
+    <div className="main-wrapper">
       {/* <img src={require('../assets/logo.svg')} /> */}
-      <h2>Mapbox to Figma</h2>
-      <p>
-        Mapbox API access token:{" "}
+      <div className="map-wrapper">
+        <div id="map">Map here</div>
+      </div>
+      <div className="side-panel">
+        <label htmlFor="tokenInput">Mapbox API access token</label>
         <input
+          name="tokenInput"
           id="tokenInput"
           value="pk.eyJ1IjoicWF0aXVtIiwiYSI6ImNrM2lrNzE1djA4a3ozY2xjeDFiMzA3b24ifQ.baOd_O4sWca3ma4klyW7Mw"
         />
-      </p>
-      <p>
-        Mapbox user name: <input id="usernameInput" value="qatium" />
-      </p>
-      <p>
-        Mapbox Style ID:
-        <input id="mapStyleInput" value="ckaf3fzi6200k1ipufjkbt50v" />
-      </p>
-      <button id="get-map" onClick={onGetMap}>
-        Get Map from Mapbox
-      </button>
-      <button id="draw-map" onClick={onDrawMap}>
-        Draw map to Figma
-      </button>
-      <div id="map">Map here</div>
+
+        <label htmlFor="usernameInput">Mapbox user name</label>
+        <input name="usernameInput" id="usernameInput" value="qatium" />
+
+        <label htmlFor="mapStyleInput">Mapbox Style ID</label>
+        <input
+          name="mapStyleInput"
+          id="mapStyleInput"
+          value="ckaf3fzi6200k1ipufjkbt50v"
+        />
+
+        <div className="side-panel__footer">
+          <button id="get-map" onClick={onGetMap}>
+            Get Map from Mapbox
+          </button>
+          <button id="draw-map" className="primary" onClick={onDrawMap}>
+            Draw map to Figma
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
