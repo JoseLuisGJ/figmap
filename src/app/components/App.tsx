@@ -16,8 +16,8 @@ const App = ({}) => {
   let bearing = 0;
   let pitch = 0;
   let auto;
-  let width = 800;
-  let height = 800;
+  let width = 560;
+  let height = 560;
   let retina = true ? "@2x" : "";
   let attribution = false;
   let logo = false;
