@@ -63,7 +63,7 @@ const App = ({}) => {
     // This is how we read messages sent from the plugin controller
     window.onmessage = event => {
       const { type, message } = event.data.pluginMessage;
-      if (type === "create-rectangles") {
+      if (type === "map-drawed") {
         console.log(`Figma Says: ${message}`);
       }
     };
