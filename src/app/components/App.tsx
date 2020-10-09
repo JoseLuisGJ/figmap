@@ -8,7 +8,7 @@ declare function require(path: string): any;
 
 const App = ({}) => {
   let retina = true ? "@2x" : "";
-  const [viewport, setViewport] = useState({
+  let [viewport, setViewport] = useState({
     longitude: -77.03968,
     latitude: 38.89744,
     zoom: 8,
@@ -24,8 +24,7 @@ const App = ({}) => {
     "pk.eyJ1IjoicWF0aXVtIiwiYSI6ImNrM2lrNzE1djA4a3ozY2xjeDFiMzA3b24ifQ.baOd_O4sWca3ma4klyW7Mw"
   );
 
-  const onDrawMap = React.useCallback(() => {
-    // TODO no coge los valores actualizados del viewport. O no leo bien los valores actualizados o no se actualizan mediante:  onViewportChange={nextViewport => setViewport(nextViewport)}
+  const onDrawMap = () => {
     let imurl = `https://api.mapbox.com/styles/v1/${username}/${style_id}/static/${viewport.longitude},${viewport.latitude},${viewport.zoom},${viewport.bearing},${viewport.pitch}/${viewport.width}x${viewport.height}${retina}?access_token=${accessToken}`;
     fetch(imurl)
       .then(r => r.arrayBuffer())
@@ -35,7 +34,7 @@ const App = ({}) => {
           "*"
         )
       );
-  }, []);
+  };
 
   const onGetMap = React.useCallback(() => {}, []);
 
@@ -85,6 +84,19 @@ const App = ({}) => {
           value="ckaf3fzi6200k1ipufjkbt50v"
           onChange={e => setStyleID(e.target.value)}
         />
+
+        <label htmlFor="mapPosition">Position</label>
+        <input
+          name="mapPosition"
+          value={viewport.latitude + "," + viewport.longitude}
+        />
+
+        <label htmlFor="mapZoom">Zoom</label>
+        <input name="mapZoom" value={viewport.zoom} />
+        <label htmlFor="mapPitch">Pitch</label>
+        <input name="mapPitch" value={viewport.pitch} />
+        <label htmlFor="mapBearing">Bearing</label>
+        <input name="mapBearing" value={viewport.bearing} />
 
         <div className="side-panel__footer">
           <button id="get-map" onClick={onGetMap}>
