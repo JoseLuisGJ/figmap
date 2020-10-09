@@ -1,36 +1,32 @@
 import * as React from "react";
+import { useState } from "react";
+import ReactMapGL from "react-map-gl";
+import "mapbox-gl/dist/mapbox-gl.css";
 import "../styles/ui.css";
 
 declare function require(path: string): any;
 
 const App = ({}) => {
-  const textbox = React.useRef<HTMLInputElement>(undefined);
-  let mapStyle;
-  let accessToken;
-  let username;
-  let style_id;
-  let overlay;
-  let lng = "-77.03968";
-  let lat = "38.89744";
-  let zoom = 9;
-  let bearing = 0;
-  let pitch = 0;
-  let auto;
-  let width = 560;
-  let height = 560;
   let retina = true ? "@2x" : "";
-  let attribution = false;
-  let logo = false;
-  let map;
+  const [viewport, setViewport] = useState({
+    longitude: -77.03968,
+    latitude: 38.89744,
+    zoom: 8,
+    bearing: 0,
+    pitch: 0,
+    width: 560,
+    height: 560
+  });
+
+  const [username, setUsername] = useState("qatium");
+  const [style_id, setStyleID] = useState("ckaf3fzi6200k1ipufjkbt50v");
+  const [accessToken, setAccessToken] = useState(
+    "pk.eyJ1IjoicWF0aXVtIiwiYSI6ImNrM2lrNzE1djA4a3ozY2xjeDFiMzA3b24ifQ.baOd_O4sWca3ma4klyW7Mw"
+  );
 
   const onDrawMap = React.useCallback(() => {
-    // Retrive statica map from mapbox style https://docs.mapbox.com/api/maps/#retrieve-a-static-map-from-a-style
-    zoom = map.getZoom();
-    pitch = map.getPitch();
-    bearing = map.getBearing();
-    lng = map.getCenter().lng;
-    lat = map.getCenter().lat;
-    let imurl = `https://api.mapbox.com/styles/v1/${username}/${style_id}/static/${lng},${lat},${zoom},${bearing},${pitch}/${width}x${height}${retina}?access_token=${accessToken}`;
+    // TODO no coge los valores actualizados del viewport. O no leo bien los valores actualizados o no se actualizan mediante:  onViewportChange={nextViewport => setViewport(nextViewport)}
+    let imurl = `https://api.mapbox.com/styles/v1/${username}/${style_id}/static/${viewport.longitude},${viewport.latitude},${viewport.zoom},${viewport.bearing},${viewport.pitch}/${viewport.width}x${viewport.height}${retina}?access_token=${accessToken}`;
     fetch(imurl)
       .then(r => r.arrayBuffer())
       .then(a =>
@@ -41,23 +37,7 @@ const App = ({}) => {
       );
   }, []);
 
-  const onGetMap = React.useCallback(() => {
-    // Get values from inputs
-    username = document.getElementById("usernameInput").value;
-    style_id = document.getElementById("mapStyleInput").value;
-    accessToken = document.getElementById("tokenInput").value;
-    // Draw Mapbox map
-    mapboxgl.accessToken = accessToken;
-    map = new mapboxgl.Map({
-      container: "map", // container id
-      style: `mapbox://styles/${username}/${style_id}`, // style URL
-      center: [lng, lat], // starting position [lng, lat]
-      zoom: zoom // starting zoom
-    });
-    map.on("load", function() {
-      map.resize();
-    });
-  }, []);
+  const onGetMap = React.useCallback(() => {}, []);
 
   React.useEffect(() => {
     // This is how we read messages sent from the plugin controller
@@ -74,7 +54,14 @@ const App = ({}) => {
     <div className="main-wrapper">
       {/* <img src={require('../assets/logo.svg')} /> */}
       <div className="map-wrapper">
-        <div id="map">Map here</div>
+        <ReactMapGL
+          {...viewport}
+          onViewportChange={nextViewport => setViewport(nextViewport)}
+          mapboxApiAccessToken={accessToken}
+          mapStyle={`mapbox://styles/${username}/${style_id}`}
+          width="100%"
+          height="100%"
+        />
       </div>
       <div className="side-panel">
         <label htmlFor="tokenInput">Mapbox API access token</label>
@@ -82,16 +69,21 @@ const App = ({}) => {
           name="tokenInput"
           id="tokenInput"
           value="pk.eyJ1IjoicWF0aXVtIiwiYSI6ImNrM2lrNzE1djA4a3ozY2xjeDFiMzA3b24ifQ.baOd_O4sWca3ma4klyW7Mw"
+          onChange={e => setAccessToken(e.target.value)}
         />
 
         <label htmlFor="usernameInput">Mapbox user name</label>
-        <input name="usernameInput" id="usernameInput" value="qatium" />
+        <input
+          name="usernameInput"
+          value="qatium"
+          onChange={e => setUsername(e.target.value)}
+        />
 
         <label htmlFor="mapStyleInput">Mapbox Style ID</label>
         <input
           name="mapStyleInput"
-          id="mapStyleInput"
           value="ckaf3fzi6200k1ipufjkbt50v"
+          onChange={e => setStyleID(e.target.value)}
         />
 
         <div className="side-panel__footer">
