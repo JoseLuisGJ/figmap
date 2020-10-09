@@ -10,7 +10,7 @@ figma.ui.onmessage = msg => {
   if (msg.type === "draw-map") {
     let imageHash = figma.createImage(msg.data).hash;
     const rect = figma.createRectangle();
-    rect.resize(560, 560);
+    rect.resize(msg.width, msg.height);
     rect.fills = [{ type: "IMAGE", scaleMode: "FIT", imageHash }];
     figma.currentPage.appendChild(rect);
     // select the rectangle and focus the viewport

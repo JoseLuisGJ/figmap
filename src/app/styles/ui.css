@@ -2,9 +2,15 @@
 
 body {
   font: 12px "Roboto";
-
   margin: 0px;
   color: #494949;
+}
+h2 {
+  color: #000000;
+  font-size: 11;
+  font-weight: 800;
+  margin-bottom: 1px;
+  margin-top: 3px;
 }
 button {
   border-radius: 5px;
@@ -66,9 +72,9 @@ input:focus {
 }
 
 .side-panel {
-  padding: 20px;
+  padding: 0;
   display: flex;
-  width: calc(30% - 40px);
+  width: 30%;
   height: 100%;
   background-color: #fff;
   flex-direction: column;
@@ -87,4 +93,44 @@ input:focus {
   height: 100%;
   margin: 0;
   padding: 0;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  margin-bottom: 4px;
+  margin-top: 4px;
+  width: 100%;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.custom-gutter > [class*="col-"] {
+  padding-right: 4px;
+  padding-left: 4px;
+}
+
+.custom-gutter > [class*="col-"]:first-child {
+  padding-left: 15px;
+}
+
+.custom-gutter > [class*="col-"]:last-child {
+  padding-right: 15px;
+}
+
+.retina-check {
+  padding-top: 28px;
+}
+
+.retina-check input {
+  display: inline-block;
+  width: auto;
+  border: 0;
+}
+
+.retina-check label {
+  display: inline-block;
+  width: auto;
 }
