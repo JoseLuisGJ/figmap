@@ -8,7 +8,7 @@ import "../styles/ui.css";
 declare function require(path: string): any;
 
 const App = ({}) => {
-  const [styleMode, setStyleMode] = useState("customMapboxStyle");
+  const [styleMode, setStyleMode] = useState("customMapboxStyle"); // mapboxStyle
 
   let [viewport, setViewport] = useState({
     longitude: -77.03968,
@@ -93,7 +93,8 @@ const App = ({}) => {
             checked={styleMode === "mapboxStyle"}
             onClick={() => {
               setStyleMode("mapboxStyle");
-              setUsername("mapbox"), setStyleID("streets-v11");
+              setUsername("mapbox");
+              setStyleID("streets-v11");
             }}
           />
           <label htmlFor="mapboxStyle" className="mr-3">
@@ -142,7 +143,8 @@ const App = ({}) => {
           </div>
         ) : (
           <div className="form-block">
-            <label htmlFor="mapbox-styles">Mapbox default styles</label>
+            <h2>Mapbox default styles</h2>
+            <label htmlFor="mapbox-styles">Map style</label>
             <select
               name="mapbox-styles"
               id="mapbox-styles"
@@ -220,12 +222,11 @@ const App = ({}) => {
             </div>
           </div>
         </div>
-        <hr />
-        <div className="side-panel__footer p-2 w-100">
-          <button id="draw-map" className="primary" onClick={onDrawMap}>
-            Draw map to Figma
-          </button>
-        </div>
+      </div>
+      <div className="side-panel__footer p-2">
+        <button id="draw-map" className="primary" onClick={onDrawMap}>
+          Draw map to Figma
+        </button>
       </div>
     </div>
   );

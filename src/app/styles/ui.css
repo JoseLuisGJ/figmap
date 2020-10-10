@@ -42,6 +42,15 @@ input {
 }
 select {
   width: 100%;
+  width: 100%;
+  height: 28px;
+  /* border-radius: 0px; */
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+select:focus {
+  box-shadow: inset 0 0 0 2px #18a0fb;
 }
 label {
   display: block;
@@ -86,8 +95,12 @@ input:focus {
 }
 
 .side-panel__footer {
-  width: 100%;
+  width: 30%;
   text-align: center;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 #map {
