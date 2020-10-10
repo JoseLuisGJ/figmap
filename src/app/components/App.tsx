@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import ReactMapGL from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "bootstrap/dist/css/bootstrap-grid.css";
@@ -8,6 +8,10 @@ import "../styles/ui.css";
 declare function require(path: string): any;
 
 const App = ({}) => {
+  const inputUsername = useRef(null);
+  const inputStyleID = useRef(null);
+  const inputToken = useRef(null);
+
   const [styleMode, setStyleMode] = useState("customMapboxStyle"); // mapboxStyle
 
   let [viewport, setViewport] = useState({
@@ -19,6 +23,12 @@ const App = ({}) => {
     width: 560,
     height: 560
   });
+  const handleViewportChange = e => {
+    setViewport({
+      ...viewport,
+      [e.target.name]: Number(e.target.value)
+    });
+  };
   const [mapExportWidth, setMapExportWidth] = useState(800);
   const [mapExportHeight, setMapExportHeight] = useState(600);
   const [isRetina, setIsRetina] = useState(false);
@@ -67,7 +77,21 @@ const App = ({}) => {
     };
   }, []);
 
-  useEffect(() => {});
+  useEffect(() => {
+    //TODO guardar en un estado previo los valores y volver a sustituirlos al intercambiar de modo
+    if (styleMode == "customMapboxStyle") {
+      setUsername(inputUsername.current.value);
+      setStyleID(inputStyleID.current.value);
+      setAccessToken(inputToken.current.value);
+    }
+    if (styleMode == "mapboxStyle") {
+      setUsername("mapbox");
+      //setStyleID("streets-v11");
+      setAccessToken(
+        "pk.eyJ1IjoicWF0aXVtIiwiYSI6ImNrM2lrNzE1djA4a3ozY2xjeDFiMzA3b24ifQ.baOd_O4sWca3ma4klyW7Mw"
+      );
+    }
+  });
 
   return (
     <div className="main-wrapper">
@@ -84,7 +108,6 @@ const App = ({}) => {
       </div>
       <div className="side-panel">
         <div className="form-block style-mode">
-          {/* TODO hacer dinámico este cambio, que guarde el estado anterior de user y mapstyle */}
           <input
             type="radio"
             id="mapboxStyle"
@@ -93,8 +116,6 @@ const App = ({}) => {
             checked={styleMode === "mapboxStyle"}
             onClick={() => {
               setStyleMode("mapboxStyle");
-              setUsername("mapbox");
-              setStyleID("streets-v11");
             }}
           />
           <label htmlFor="mapboxStyle" className="mr-3">
@@ -109,8 +130,6 @@ const App = ({}) => {
             checked={styleMode === "customMapboxStyle"}
             onClick={() => {
               setStyleMode("customMapboxStyle");
-              setUsername("qatium");
-              setStyleID("ckaf3fzi6200k1ipufjkbt50v");
             }}
           />
           <label htmlFor="customMapboxStyle"> Custom style</label>
@@ -123,22 +142,25 @@ const App = ({}) => {
             <input
               name="tokenInput"
               id="tokenInput"
-              value="pk.eyJ1IjoicWF0aXVtIiwiYSI6ImNrM2lrNzE1djA4a3ozY2xjeDFiMzA3b24ifQ.baOd_O4sWca3ma4klyW7Mw"
+              value={accessToken}
               onChange={e => setAccessToken(e.target.value)}
+              ref={inputToken}
             />
 
             <label htmlFor="usernameInput">Mapbox user name</label>
             <input
               name="usernameInput"
-              value="qatium"
+              value={username}
               onChange={e => setUsername(e.target.value)}
+              ref={inputUsername}
             />
 
             <label htmlFor="mapStyleInput">Mapbox Style ID</label>
             <input
               name="mapStyleInput"
-              value="ckaf3fzi6200k1ipufjkbt50v"
+              value={style_id}
               onChange={e => setStyleID(e.target.value)}
+              ref={inputStyleID}
             />
           </div>
         ) : (
@@ -162,27 +184,54 @@ const App = ({}) => {
         <hr />
         <div className="form-block">
           <h2>Map properties</h2>
-          <label htmlFor="mapPosition">Position</label>
-          <input
-            name="mapPosition"
-            value={viewport.latitude + "," + viewport.longitude}
-          />
+          <div className="container-fluid p-0">
+            <div className="row custom-gutter">
+              <div className="col-6">
+                <label htmlFor="latitude">Latitude</label>
+                <input
+                  name="latitude"
+                  value={viewport.latitude}
+                  onChange={handleViewportChange}
+                />
+              </div>
+              <div className="col-6">
+                <label htmlFor="longitude">Longitude</label>
+                <input
+                  name="longitude"
+                  value={viewport.longitude}
+                  onChange={handleViewportChange}
+                />
+              </div>
+            </div>
+          </div>
         </div>
         <hr />
         <div className="form-block">
           <div className="container-fluid p-0">
             <div className="row custom-gutter">
               <div className="col-4">
-                <label htmlFor="mapZoom">Zoom</label>
-                <input name="mapZoom" value={viewport.zoom} />
+                <label htmlFor="zoom">Zoom</label>
+                <input
+                  name="zoom"
+                  value={viewport.zoom}
+                  onChange={handleViewportChange}
+                />
               </div>
               <div className="col-4">
-                <label htmlFor="mapPitch">Pitch</label>
-                <input name="mapPitch" value={viewport.pitch} />
+                <label htmlFor="pitch">Pitch</label>
+                <input
+                  name="pitch"
+                  value={viewport.pitch}
+                  onChange={handleViewportChange}
+                />
               </div>
               <div className="col-4">
-                <label htmlFor="mapBearing">Bearing</label>
-                <input name="mapBearing" value={viewport.bearing} />
+                <label htmlFor="bearing">Bearing</label>
+                <input
+                  name="bearing"
+                  value={viewport.bearing}
+                  onChange={handleViewportChange}
+                />
               </div>
             </div>
           </div>
