@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ReactMapGL from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "bootstrap/dist/css/bootstrap-grid.css";
@@ -8,6 +8,8 @@ import "../styles/ui.css";
 declare function require(path: string): any;
 
 const App = ({}) => {
+  const [styleMode, setStyleMode] = useState("customMapboxStyle");
+
   let [viewport, setViewport] = useState({
     longitude: -77.03968,
     latitude: 38.89744,
@@ -65,6 +67,8 @@ const App = ({}) => {
     };
   }, []);
 
+  useEffect(() => {});
+
   return (
     <div className="main-wrapper">
       {/* <img src={require('../assets/logo.svg')} /> */}
@@ -79,32 +83,82 @@ const App = ({}) => {
         />
       </div>
       <div className="side-panel">
-        <div className="p-2 w-100">
-          <h2>Mapbox custom style</h2>
-          <label htmlFor="tokenInput">Mapbox API access token</label>
+        <div className="form-block style-mode">
+          {/* TODO hacer dinámico este cambio, que guarde el estado anterior de user y mapstyle */}
           <input
-            name="tokenInput"
-            id="tokenInput"
-            value="pk.eyJ1IjoicWF0aXVtIiwiYSI6ImNrM2lrNzE1djA4a3ozY2xjeDFiMzA3b24ifQ.baOd_O4sWca3ma4klyW7Mw"
-            onChange={e => setAccessToken(e.target.value)}
+            type="radio"
+            id="mapboxStyle"
+            name="mapStyleSelector"
+            value="mapboxStyle"
+            checked={styleMode === "mapboxStyle"}
+            onClick={() => {
+              setStyleMode("mapboxStyle");
+              setUsername("mapbox"), setStyleID("streets-v11");
+            }}
           />
-
-          <label htmlFor="usernameInput">Mapbox user name</label>
+          <label htmlFor="mapboxStyle" className="mr-3">
+            {" "}
+            Mapbox style
+          </label>
           <input
-            name="usernameInput"
-            value="qatium"
-            onChange={e => setUsername(e.target.value)}
+            type="radio"
+            id="customMapboxStyle"
+            name="mapStyleSelector"
+            value="customMapboxStyle"
+            checked={styleMode === "customMapboxStyle"}
+            onClick={() => {
+              setStyleMode("customMapboxStyle");
+              setUsername("qatium");
+              setStyleID("ckaf3fzi6200k1ipufjkbt50v");
+            }}
           />
-
-          <label htmlFor="mapStyleInput">Mapbox Style ID</label>
-          <input
-            name="mapStyleInput"
-            value="ckaf3fzi6200k1ipufjkbt50v"
-            onChange={e => setStyleID(e.target.value)}
-          />
+          <label htmlFor="customMapboxStyle"> Custom style</label>
         </div>
         <hr />
-        <div className="p-2 w-100">
+        {styleMode === "customMapboxStyle" ? (
+          <div className="form-block">
+            <h2>Mapbox custom style</h2>
+            <label htmlFor="tokenInput">Mapbox API access token</label>
+            <input
+              name="tokenInput"
+              id="tokenInput"
+              value="pk.eyJ1IjoicWF0aXVtIiwiYSI6ImNrM2lrNzE1djA4a3ozY2xjeDFiMzA3b24ifQ.baOd_O4sWca3ma4klyW7Mw"
+              onChange={e => setAccessToken(e.target.value)}
+            />
+
+            <label htmlFor="usernameInput">Mapbox user name</label>
+            <input
+              name="usernameInput"
+              value="qatium"
+              onChange={e => setUsername(e.target.value)}
+            />
+
+            <label htmlFor="mapStyleInput">Mapbox Style ID</label>
+            <input
+              name="mapStyleInput"
+              value="ckaf3fzi6200k1ipufjkbt50v"
+              onChange={e => setStyleID(e.target.value)}
+            />
+          </div>
+        ) : (
+          <div className="form-block">
+            <label htmlFor="mapbox-styles">Mapbox default styles</label>
+            <select
+              name="mapbox-styles"
+              id="mapbox-styles"
+              onChange={e => setStyleID(e.currentTarget.value)}
+            >
+              <option value="streets-v11">streets</option>
+              <option value="light-v10">light</option>
+              <option value="dark-v10">dark</option>
+              <option value="outdoors-v11">outdoors</option>
+              <option value="satellite-v9">satellite</option>
+            </select>
+          </div>
+        )}
+
+        <hr />
+        <div className="form-block">
           <h2>Map properties</h2>
           <label htmlFor="mapPosition">Position</label>
           <input
@@ -113,7 +167,7 @@ const App = ({}) => {
           />
         </div>
         <hr />
-        <div className="p-2 w-100">
+        <div className="form-block">
           <div className="container-fluid p-0">
             <div className="row custom-gutter">
               <div className="col-4">
@@ -132,7 +186,7 @@ const App = ({}) => {
           </div>
         </div>
         <hr />
-        <div className="p-2 w-100">
+        <div className="form-block">
           <h2>Image size</h2>
           <div className="container-fluid p-0">
             <div className="row custom-gutter">
