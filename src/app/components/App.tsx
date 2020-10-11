@@ -46,11 +46,13 @@ const App = ({}) => {
   );
 
   const onDrawMap = () => {
-    let imurl = `https://api.mapbox.com/styles/v1/${username}/${customStyleID}/static/${
-      viewport.longitude
-    },${viewport.latitude},${viewport.zoom},${viewport.bearing},${
-      viewport.pitch
-    }/${mapExportWidth}x${mapExportHeight}${
+    let imurl = `https://api.mapbox.com/styles/v1/${
+      styleMode == "customMapboxStyle" ? username : "mapbox"
+    }/${
+      styleMode == "customMapboxStyle" ? customStyleID : mapboxStyle
+    }/static/${viewport.longitude},${viewport.latitude},${viewport.zoom},${
+      viewport.bearing
+    },${viewport.pitch}/${mapExportWidth}x${mapExportHeight}${
       isRetina ? "@2x" : ""
     }?access_token=${accessToken}`;
     fetch(imurl)
