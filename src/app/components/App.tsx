@@ -37,13 +37,16 @@ const App = ({}) => {
   };
 
   const [username, setUsername] = useState("qatium");
-  const [style_id, setStyleID] = useState("ckaf3fzi6200k1ipufjkbt50v");
+  const [customStyleID, setCustomStyleID] = useState(
+    "ckaf3fzi6200k1ipufjkbt50v"
+  );
+  const [mapboxStyle, setMapboxStyle] = useState("streets-v11");
   const [accessToken, setAccessToken] = useState(
     "pk.eyJ1IjoicWF0aXVtIiwiYSI6ImNrM2lrNzE1djA4a3ozY2xjeDFiMzA3b24ifQ.baOd_O4sWca3ma4klyW7Mw"
   );
 
   const onDrawMap = () => {
-    let imurl = `https://api.mapbox.com/styles/v1/${username}/${style_id}/static/${
+    let imurl = `https://api.mapbox.com/styles/v1/${username}/${customStyleID}/static/${
       viewport.longitude
     },${viewport.latitude},${viewport.zoom},${viewport.bearing},${
       viewport.pitch
@@ -77,21 +80,7 @@ const App = ({}) => {
     };
   }, []);
 
-  useEffect(() => {
-    //TODO guardar en un estado previo los valores y volver a sustituirlos al intercambiar de modo
-    if (styleMode == "customMapboxStyle") {
-      setUsername(inputUsername.current.value);
-      setStyleID(inputStyleID.current.value);
-      setAccessToken(inputToken.current.value);
-    }
-    if (styleMode == "mapboxStyle") {
-      setUsername("mapbox");
-      //setStyleID("streets-v11");
-      setAccessToken(
-        "pk.eyJ1IjoicWF0aXVtIiwiYSI6ImNrM2lrNzE1djA4a3ozY2xjeDFiMzA3b24ifQ.baOd_O4sWca3ma4klyW7Mw"
-      );
-    }
-  });
+  useEffect(() => {});
 
   return (
     <div className="main-wrapper">
@@ -101,7 +90,9 @@ const App = ({}) => {
           {...viewport}
           onViewportChange={nextViewport => setViewport(nextViewport)}
           mapboxApiAccessToken={accessToken}
-          mapStyle={`mapbox://styles/${username}/${style_id}`}
+          mapStyle={`mapbox://styles/${
+            styleMode == "customMapboxStyle" ? username : "mapbox"
+          }/${styleMode == "customMapboxStyle" ? customStyleID : mapboxStyle}`}
           width="100%"
           height="100%"
         />
@@ -158,8 +149,8 @@ const App = ({}) => {
             <label htmlFor="mapStyleInput">Mapbox Style ID</label>
             <input
               name="mapStyleInput"
-              value={style_id}
-              onChange={e => setStyleID(e.target.value)}
+              value={customStyleID}
+              onChange={e => setCustomStyleID(e.target.value)}
               ref={inputStyleID}
             />
           </div>
@@ -170,7 +161,7 @@ const App = ({}) => {
             <select
               name="mapbox-styles"
               id="mapbox-styles"
-              onChange={e => setStyleID(e.currentTarget.value)}
+              onChange={e => setMapboxStyle(e.currentTarget.value)}
             >
               <option value="streets-v11">streets</option>
               <option value="light-v10">light</option>
