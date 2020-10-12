@@ -12,7 +12,7 @@ const App = ({}) => {
   const inputStyleID = useRef(null);
   const inputToken = useRef(null);
 
-  const [styleMode, setStyleMode] = useState("customMapboxStyle"); // mapboxStyle
+  const [styleMode, setStyleMode] = useState("mapboxStyle"); // mapboxStyle or customMapboxStyle
 
   let [viewport, setViewport] = useState({
     longitude: -77.03968,
@@ -23,10 +23,10 @@ const App = ({}) => {
     width: 560,
     height: 560
   });
-  const handleViewportChange = e => {
+  const handleViewportChange = (e, value) => {
     setViewport({
       ...viewport,
-      [e.target.name]: Number(e.target.value)
+      [e.target.name]: Number(value)
     });
   };
   const [mapExportWidth, setMapExportWidth] = useState(800);
@@ -36,13 +36,13 @@ const App = ({}) => {
     setIsRetina(!isRetina);
   };
 
-  const [username, setUsername] = useState("qatium");
+  const [username, setUsername] = useState("ergum");
   const [customStyleID, setCustomStyleID] = useState(
-    "ckaf3fzi6200k1ipufjkbt50v"
+    "ckg6ps8s62b5e19nrr67wqw9u"
   );
   const [mapboxStyle, setMapboxStyle] = useState("streets-v11");
   const [accessToken, setAccessToken] = useState(
-    "pk.eyJ1IjoicWF0aXVtIiwiYSI6ImNrM2lrNzE1djA4a3ozY2xjeDFiMzA3b24ifQ.baOd_O4sWca3ma4klyW7Mw"
+    "pk.eyJ1IjoiZXJndW0iLCJhIjoiY2tnNnB1dzdnMTZzMTJybzVoY245bWs3biJ9.ZSHQTE9yUrMB6CPmEEEsfQ"
   );
 
   const onDrawMap = () => {
@@ -97,6 +97,7 @@ const App = ({}) => {
           }/${styleMode == "customMapboxStyle" ? customStyleID : mapboxStyle}`}
           width="100%"
           height="100%"
+          preventStyleDiffing={true}
         />
       </div>
       <div className="side-panel">
@@ -106,7 +107,7 @@ const App = ({}) => {
             id="mapboxStyle"
             name="mapStyleSelector"
             value="mapboxStyle"
-            checked={styleMode === "mapboxStyle"}
+            defaultChecked={styleMode === "mapboxStyle"}
             onClick={() => {
               setStyleMode("mapboxStyle");
             }}
@@ -120,7 +121,7 @@ const App = ({}) => {
             id="customMapboxStyle"
             name="mapStyleSelector"
             value="customMapboxStyle"
-            checked={styleMode === "customMapboxStyle"}
+            defaultChecked={styleMode === "customMapboxStyle"}
             onClick={() => {
               setStyleMode("customMapboxStyle");
             }}
@@ -164,6 +165,7 @@ const App = ({}) => {
               name="mapbox-styles"
               id="mapbox-styles"
               onChange={e => setMapboxStyle(e.currentTarget.value)}
+              defaultValue={mapboxStyle}
             >
               <option value="streets-v11">streets</option>
               <option value="light-v10">light</option>
@@ -182,17 +184,43 @@ const App = ({}) => {
               <div className="col-6">
                 <label htmlFor="latitude">Latitude</label>
                 <input
+                  title="Between -85 and 85"
+                  type="number"
+                  min="-85"
+                  max="85"
+                  step="any"
                   name="latitude"
                   value={viewport.latitude}
-                  onChange={handleViewportChange}
+                  onChange={e => {
+                    if (Number(e.target.value) > 85) {
+                      handleViewportChange(e, 85);
+                    } else if (Number(e.target.value) < -85) {
+                      handleViewportChange(e, -85);
+                    } else {
+                      handleViewportChange(e, e.target.value);
+                    }
+                  }}
                 />
               </div>
               <div className="col-6">
                 <label htmlFor="longitude">Longitude</label>
                 <input
+                  title="Between -180 and 180"
+                  type="number"
+                  min="-180"
+                  max="180"
+                  step="any"
                   name="longitude"
                   value={viewport.longitude}
-                  onChange={handleViewportChange}
+                  onChange={e => {
+                    if (Number(e.target.value) > 180) {
+                      handleViewportChange(e, 180);
+                    } else if (Number(e.target.value) < -180) {
+                      handleViewportChange(e, -180);
+                    } else {
+                      handleViewportChange(e, e.target.value);
+                    }
+                  }}
                 />
               </div>
             </div>
@@ -205,25 +233,64 @@ const App = ({}) => {
               <div className="col-4">
                 <label htmlFor="zoom">Zoom</label>
                 <input
+                  title="Between 0 and 22"
+                  type="number"
+                  min="0"
+                  max="22"
+                  step="any"
                   name="zoom"
                   value={viewport.zoom}
-                  onChange={handleViewportChange}
+                  onChange={e => {
+                    if (Number(e.target.value) > 22) {
+                      handleViewportChange(e, 22);
+                    } else if (Number(e.target.value) < 0) {
+                      handleViewportChange(e, 0);
+                    } else {
+                      handleViewportChange(e, e.target.value);
+                    }
+                  }}
                 />
               </div>
               <div className="col-4">
                 <label htmlFor="pitch">Pitch</label>
                 <input
+                  title="Between 0 and 60"
+                  type="number"
+                  min="0"
+                  max="60"
+                  step="any"
                   name="pitch"
                   value={viewport.pitch}
-                  onChange={handleViewportChange}
+                  onChange={e => {
+                    if (Number(e.target.value) > 60) {
+                      handleViewportChange(e, 60);
+                    } else if (Number(e.target.value) < 0) {
+                      handleViewportChange(e, 0);
+                    } else {
+                      handleViewportChange(e, e.target.value);
+                    }
+                  }}
                 />
               </div>
               <div className="col-4">
                 <label htmlFor="bearing">Bearing</label>
                 <input
+                  title="Between -180 and 180"
+                  type="number"
+                  min="-180"
+                  max="180"
+                  step="any"
                   name="bearing"
                   value={viewport.bearing}
-                  onChange={handleViewportChange}
+                  onChange={e => {
+                    if (Number(e.target.value) > 180) {
+                      handleViewportChange(e, 180);
+                    } else if (Number(e.target.value) < -180) {
+                      handleViewportChange(e, -180);
+                    } else {
+                      handleViewportChange(e, e.target.value);
+                    }
+                  }}
                 />
               </div>
             </div>
@@ -237,19 +304,43 @@ const App = ({}) => {
               <div className="col-4">
                 <label htmlFor="mapWidth">Width</label>
                 <input
+                  type="number"
+                  min="1"
+                  max="1280"
+                  step="any"
                   name="mapWidth"
                   title="Max. 1280"
                   value={mapExportWidth}
-                  onChange={e => setMapExportWidth(Number(e.target.value))}
+                  onChange={e => {
+                    if (Number(e.target.value) > 1280) {
+                      setMapExportWidth(1280);
+                    } else if (Number(e.target.value) < 1) {
+                      setMapExportWidth(1);
+                    } else {
+                      setMapExportWidth(Number(e.target.value));
+                    }
+                  }}
                 />
               </div>
               <div className="col-4">
                 <label htmlFor="mapHeight">Height</label>
                 <input
+                  type="number"
+                  min="1"
+                  max="1280"
+                  step="any"
                   name="mapHeight"
                   title="Max. 1280"
                   value={mapExportHeight}
-                  onChange={e => setMapExportHeight(Number(e.target.value))}
+                  onChange={e => {
+                    if (Number(e.target.value) > 1280) {
+                      setMapExportHeight(1280);
+                    } else if (Number(e.target.value) < 1) {
+                      setMapExportHeight(1);
+                    } else {
+                      setMapExportHeight(Number(e.target.value));
+                    }
+                  }}
                 />
               </div>
               <div className="col-4 retina-check">
