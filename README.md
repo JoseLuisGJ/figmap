@@ -1,6 +1,12 @@
 # Figmap
 
-The main goal of this plugin is to get any custom styled map from Mapbox and get an image from it to Figma. Then the further steps will be create a data layers feeded by geoJson files or content to draw batched markers and transform them in Figma components.
+This plugin let you get an image from the main Mapbox default styles or your custom map style created in Mapbox Studio.
+You can change the map properties like latitude, longitude, zoom, bearing or pitch over the map or using the field controls.
+
+Also you can configure the width, height and retina ready of the image to get in Figma.
+Get in mind the image obtained in Figma doesn't have Mapbox logo neither attribution. Please read the Mapbox privacy policy about it.
+
+Version 2 will let you create markers with a simple drawing tool or copy and pasting geojson data in different layers. Then you will be able to link this markers to your Figma components.
 
 ![Figmap Mockup](https://github.com/ergum/figmap/blob/master/src/app/assets/FigmapMockup.gif?raw=true) 
 
