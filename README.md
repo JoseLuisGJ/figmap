@@ -4,7 +4,7 @@ This plugin let you get an image from the main Mapbox default styles or your cus
 You can change the map properties like latitude, longitude, zoom, bearing or pitch over the map or using the field controls.
 
 Also you can configure the width, height and retina ready of the image to get in Figma.
-Get in mind the image obtained in Figma doesn't have Mapbox logo neither attribution. Please read the Mapbox privacy policy about it.
+Get in mind the image obtained in Figma doesn't have Mapbox logo neither attribution. Please read the [Mapbox privacy policy about it](https://docs.mapbox.com/help/how-mapbox-works/attribution/#static--print).
 
 Version 2 will let you create markers with a simple drawing tool or copy and pasting geojson data in different layers. Then you will be able to link this markers to your Figma components.
 
