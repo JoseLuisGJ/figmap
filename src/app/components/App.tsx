@@ -66,7 +66,7 @@ const App = ({}) => {
       viewport.bearing
     },${viewport.pitch}/${mapExportWidth}x${mapExportHeight}${
       isRetina ? "@2x" : ""
-    }?access_token=${accessToken}`;
+    }?access_token=${accessToken}&attribution=false&logo=false`;
     fetch(imurl)
       .then(r => r.arrayBuffer())
       .then(a =>
