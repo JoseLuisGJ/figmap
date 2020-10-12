@@ -1,13 +1,16 @@
 import * as React from "react";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import ReactMapGL from "react-map-gl";
+import Geocoder from "react-map-gl-geocoder";
 import "mapbox-gl/dist/mapbox-gl.css";
+import "react-map-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import "bootstrap/dist/css/bootstrap-grid.css";
 import "../styles/ui.css";
 
 declare function require(path: string): any;
 
 const App = ({}) => {
+  const mapRef = useRef();
   const inputUsername = useRef(null);
   const inputStyleID = useRef(null);
   const inputToken = useRef(null);
@@ -29,6 +32,15 @@ const App = ({}) => {
       [e.target.name]: Number(value)
     });
   };
+  // if you are happy with Geocoder default settings, you can just use handleViewportChange directly
+  const handleGeocoderViewportChange = useCallback(newViewport => {
+    const geocoderDefaultOverrides = { transitionDuration: 1000 };
+
+    return setViewport({
+      ...newViewport,
+      ...geocoderDefaultOverrides
+    });
+  }, []);
   const [mapExportWidth, setMapExportWidth] = useState(800);
   const [mapExportHeight, setMapExportHeight] = useState(600);
   const [isRetina, setIsRetina] = useState(false);
@@ -90,6 +102,7 @@ const App = ({}) => {
       <div className="map-wrapper">
         <ReactMapGL
           {...viewport}
+          ref={mapRef}
           onViewportChange={nextViewport => setViewport(nextViewport)}
           mapboxApiAccessToken={accessToken}
           mapStyle={`mapbox://styles/${
@@ -98,7 +111,15 @@ const App = ({}) => {
           width="100%"
           height="100%"
           preventStyleDiffing={true}
-        />
+        >
+          <Geocoder
+            mapRef={mapRef}
+            onViewportChange={handleGeocoderViewportChange}
+            mapboxApiAccessToken={accessToken}
+            position="top-right"
+            marker={false}
+          />
+        </ReactMapGL>
       </div>
       <div className="side-panel">
         <div className="form-block style-mode">

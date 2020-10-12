@@ -10,7 +10,9 @@
 	},
 	"dependencies": {
 		"react": "^16.13.1",
-		"react-dom": "^16.13.1"
+		"react-dom": "^16.13.1",
+		"react-map-gl-geocoder": "^2.1.5",
+		"viewport-mercator-project": "^7.0.1"
 	},
 	"devDependencies": {
 		"@figma/plugin-typings": "^1.15.0",

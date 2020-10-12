@@ -178,3 +178,8 @@ hr {
   color: #000;
   margin-left: 4px;
 }
+
+.mapboxgl-ctrl-geocoder--button {
+  box-shadow: none;
+  font-family: "Roboto";
+}
