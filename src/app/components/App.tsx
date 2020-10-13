@@ -7,6 +7,11 @@ import "react-map-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import "bootstrap/dist/css/bootstrap-grid.css";
 import "../styles/ui.css";
 
+import FormPanel from "./FormPanel";
+import Map from "./Map";
+import MapMarkersForm from "./MapMarkersForm";
+import MapStylesForm from "./MapStylesForm";
+
 declare function require(path: string): any;
 
 const App = ({}) => {
@@ -98,6 +103,10 @@ const App = ({}) => {
 
   return (
     <div className="main-wrapper">
+      <FormPanel />
+      <Map />
+      <MapMarkersForm />
+      <MapStylesForm />
       {/* <img src={require('../assets/logo.svg')} /> */}
       <div className="map-wrapper">
         <ReactMapGL
