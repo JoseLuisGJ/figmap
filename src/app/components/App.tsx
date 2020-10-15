@@ -10,6 +10,7 @@ import Map from "./Map";
 import MapStylesForm from "./MapStylesForm";
 import MapPropertiesForm from "./MapPropertiesForm";
 import ImageSizeForm from "./ImageSizeForm";
+import MapMarkersForm from "./MapMarkersForm";
 import DrawMap from "./DrawMap";
 
 declare function require(path: string): any;
@@ -19,6 +20,7 @@ const App = ({}) => {
   const inputStyleID = useRef(null);
   const inputToken = useRef(null);
 
+  const [mapMode, setMapMode] = useState("styles"); // styles or data
   const [styleMode, setStyleMode] = useState("mapboxStyle"); // mapboxStyle or customMapboxStyle
 
   let [viewport, setViewport] = useState({
@@ -76,35 +78,47 @@ const App = ({}) => {
         />
       </div>
       <div className="side-panel">
-        <MapStylesForm
-          styleMode={styleMode}
-          accessToken={accessToken}
-          username={username}
-          customStyleID={customStyleID}
-          mapboxStyle={mapboxStyle}
-          setAccessToken={setAccessToken}
-          setUsername={setUsername}
-          inputToken={inputToken}
-          inputUsername={inputUsername}
-          inputStyleID={inputStyleID}
-          setCustomStyleID={setCustomStyleID}
-          setMapboxStyle={setMapboxStyle}
-          setStyleMode={setStyleMode}
-        />
-        <hr />
-        <MapPropertiesForm
-          viewport={viewport}
-          handleViewportChange={handleViewportChange}
-        />
-        <hr />
-        <ImageSizeForm
-          setMapExportWidth={setMapExportWidth}
-          setMapExportHeight={setMapExportHeight}
-          mapExportWidth={mapExportWidth}
-          mapExportHeight={mapExportHeight}
-          isRetina={isRetina}
-          onToggleRetina={onToggleRetina}
-        />
+        <div className="form-block side-panel__tabs">
+          <button onClick={() => setMapMode("styles")}>Map Styles</button>
+          <button onClick={() => setMapMode("data")}>Data</button>
+        </div>
+        {mapMode === "styles" ? (
+          <>
+            <MapStylesForm
+              styleMode={styleMode}
+              accessToken={accessToken}
+              username={username}
+              customStyleID={customStyleID}
+              mapboxStyle={mapboxStyle}
+              setAccessToken={setAccessToken}
+              setUsername={setUsername}
+              inputToken={inputToken}
+              inputUsername={inputUsername}
+              inputStyleID={inputStyleID}
+              setCustomStyleID={setCustomStyleID}
+              setMapboxStyle={setMapboxStyle}
+              setStyleMode={setStyleMode}
+            />
+            <hr />
+            <MapPropertiesForm
+              viewport={viewport}
+              handleViewportChange={handleViewportChange}
+            />
+            <hr />
+            <ImageSizeForm
+              setMapExportWidth={setMapExportWidth}
+              setMapExportHeight={setMapExportHeight}
+              mapExportWidth={mapExportWidth}
+              mapExportHeight={mapExportHeight}
+              isRetina={isRetina}
+              onToggleRetina={onToggleRetina}
+            />
+          </>
+        ) : (
+          <>
+            <MapMarkersForm />
+          </>
+        )}
         <DrawMap
           username={username}
           styleMode={styleMode}
