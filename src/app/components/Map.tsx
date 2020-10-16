@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useCallback, useEffect, useRef } from "react";
 import ReactMapGL from "react-map-gl";
+import { Marker } from "react-map-gl";
 import Geocoder from "react-map-gl-geocoder";
 
 interface IMap {
@@ -23,6 +24,7 @@ const Map: React.FC<IMap> = ({
   setViewport
 }) => {
   const mapRef = useRef();
+  const markerRef = useRef();
   useEffect(() => {});
 
   // if you are happy with Geocoder default settings, you can just use handleViewportChange directly
@@ -34,12 +36,29 @@ const Map: React.FC<IMap> = ({
       ...geocoderDefaultOverrides
     });
   }, []);
-
+  // const mapboxMapRef = null;
+  const onLoad = () => {
+    // let map = mapRef.current.getMap();
+    // const coordinate = [-122.420679, 37.772537];
+    // let point = map.project(coordinate);
+    // map.on('mousemove', function (e) {
+    //   console.log( JSON.stringify(e.point))
+    // });
+    // console.log(point);
+    console.log("=>", markerRef);
+    // console.log('mapRef.current is ready for use', )
+    // console.log('mapRef.current is ready for use', mapboxMapRef.current)
+  };
   return (
     <div>
       <ReactMapGL
         {...viewport}
         ref={mapRef}
+        // ref={(ref) => {
+        //   // mapboxMapRef.current = ref && ref.getMap();
+        //   return mapRef;
+        // }}
+        onLoad={onLoad}
         onViewportChange={nextViewport => setViewport(nextViewport)}
         mapboxApiAccessToken={accessToken}
         mapStyle={`mapbox://styles/${
@@ -48,6 +67,7 @@ const Map: React.FC<IMap> = ({
         width="100%"
         height="100%"
         preventStyleDiffing={true}
+        onClick={e => console.log(JSON.stringify(e.point))}
       >
         <Geocoder
           mapRef={mapRef}
@@ -56,6 +76,16 @@ const Map: React.FC<IMap> = ({
           position="top-right"
           marker={false}
         />
+        <Marker
+          ref={markerRef}
+          key={1}
+          offsetTop={-48}
+          offsetLeft={-24}
+          latitude={38.89744}
+          longitude={-77.03968}
+        >
+          <img src="https://img.icons8.com/color/48/000000/marker.png" />
+        </Marker>
       </ReactMapGL>
     </div>
   );
