@@ -23,6 +23,8 @@ const App = ({}) => {
   const [mapMode, setMapMode] = useState("styles"); // styles or data
   const [styleMode, setStyleMode] = useState("mapboxStyle"); // mapboxStyle or customMapboxStyle
 
+  const [stateMarkers, setStateMarkers] = useState([]);
+
   let [viewport, setViewport] = useState({
     longitude: -77.03968,
     latitude: 38.89744,
@@ -75,6 +77,8 @@ const App = ({}) => {
           customStyleID={customStyleID}
           mapboxStyle={mapboxStyle}
           setViewport={setViewport}
+          stateMarkers={stateMarkers}
+          setStateMarkers={setStateMarkers}
         />
       </div>
       <div className="side-panel">
@@ -129,6 +133,7 @@ const App = ({}) => {
           mapExportHeight={mapExportHeight}
           isRetina={isRetina}
           accessToken={accessToken}
+          stateMarkers={stateMarkers}
         />
       </div>
     </div>

@@ -11,6 +11,7 @@ interface IMap {
   mapExportHeight: any;
   isRetina: any;
   accessToken: any;
+  stateMarkers: any;
 }
 
 const DrawMap: React.FC<IMap> = ({
@@ -22,11 +23,13 @@ const DrawMap: React.FC<IMap> = ({
   mapExportWidth,
   mapExportHeight,
   isRetina,
-  accessToken
+  accessToken,
+  stateMarkers
 }) => {
   useEffect(() => {});
 
   const onDrawMap = () => {
+    console.log("onDrawMap =>", stateMarkers);
     let imurl = `https://api.mapbox.com/styles/v1/${
       styleMode == "customMapboxStyle" ? username : "mapbox"
     }/${
@@ -45,7 +48,8 @@ const DrawMap: React.FC<IMap> = ({
               type: "draw-map",
               width: mapExportWidth,
               height: mapExportHeight,
-              data: new Uint8Array(a)
+              data: new Uint8Array(a),
+              markers: stateMarkers
             }
           },
           "*"

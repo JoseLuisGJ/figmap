@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import ReactMapGL from "react-map-gl";
 import { Marker } from "react-map-gl";
 import Geocoder from "react-map-gl-geocoder";
@@ -12,6 +12,8 @@ interface IMap {
   customStyleID: String;
   mapboxStyle: String;
   setViewport: any;
+  stateMarkers: any;
+  setStateMarkers: any;
 }
 
 const Map: React.FC<IMap> = ({
@@ -21,10 +23,15 @@ const Map: React.FC<IMap> = ({
   username,
   customStyleID,
   mapboxStyle,
-  setViewport
+  setViewport,
+  stateMarkers,
+  setStateMarkers
 }) => {
   const mapRef = useRef();
   const markerRef = useRef();
+
+  const [markerID, setMarkerID] = useState(0);
+
   useEffect(() => {});
 
   // if you are happy with Geocoder default settings, you can just use handleViewportChange directly
@@ -49,15 +56,24 @@ const Map: React.FC<IMap> = ({
     // console.log('mapRef.current is ready for use', )
     // console.log('mapRef.current is ready for use', mapboxMapRef.current)
   };
+  const mapClicked = e => {
+    const newMarker = stateMarkers.concat({
+      id: setMarkerID(markerID + 1),
+      latitude: e.lngLat[1],
+      longitude: e.lngLat[0],
+      x: e.point[0],
+      y: e.point[1],
+      icon: null
+    });
+    setStateMarkers(newMarker);
+    console.log(JSON.stringify(e.point), e.lngLat[0], e.lngLat[1], markerID);
+    console.log("mapClicked =>", stateMarkers);
+  };
   return (
     <div>
       <ReactMapGL
         {...viewport}
         ref={mapRef}
-        // ref={(ref) => {
-        //   // mapboxMapRef.current = ref && ref.getMap();
-        //   return mapRef;
-        // }}
         onLoad={onLoad}
         onViewportChange={nextViewport => setViewport(nextViewport)}
         mapboxApiAccessToken={accessToken}
@@ -67,7 +83,7 @@ const Map: React.FC<IMap> = ({
         width="100%"
         height="100%"
         preventStyleDiffing={true}
-        onClick={e => console.log(JSON.stringify(e.point))}
+        onClick={e => mapClicked(e)}
       >
         <Geocoder
           mapRef={mapRef}
@@ -76,16 +92,18 @@ const Map: React.FC<IMap> = ({
           position="top-right"
           marker={false}
         />
-        <Marker
-          ref={markerRef}
-          key={1}
-          offsetTop={-48}
-          offsetLeft={-24}
-          latitude={38.89744}
-          longitude={-77.03968}
-        >
-          <img src="https://img.icons8.com/color/48/000000/marker.png" />
-        </Marker>
+        {stateMarkers.map((localState, index) => (
+          <Marker
+            ref={markerRef || index}
+            key={localState.id}
+            offsetTop={0}
+            offsetLeft={0}
+            latitude={localState.latitude}
+            longitude={localState.longitude}
+          >
+            <img src="https://img.icons8.com/color/48/000000/marker.png" />
+          </Marker>
+        ))}
       </ReactMapGL>
     </div>
   );
