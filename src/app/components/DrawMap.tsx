@@ -12,6 +12,7 @@ interface IMap {
   isRetina: any;
   accessToken: any;
   stateMarkers: any;
+  markerImg: any;
 }
 
 const DrawMap: React.FC<IMap> = ({
@@ -24,7 +25,8 @@ const DrawMap: React.FC<IMap> = ({
   mapExportHeight,
   isRetina,
   accessToken,
-  stateMarkers
+  stateMarkers,
+  markerImg
 }) => {
   useEffect(() => {});
 
@@ -49,7 +51,8 @@ const DrawMap: React.FC<IMap> = ({
               width: mapExportWidth,
               height: mapExportHeight,
               data: new Uint8Array(a),
-              markers: stateMarkers
+              markers: stateMarkers,
+              markerImg: markerImg
             }
           },
           "*"

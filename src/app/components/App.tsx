@@ -20,10 +20,11 @@ const App = ({}) => {
   const inputStyleID = useRef(null);
   const inputToken = useRef(null);
 
-  const [mapMode, setMapMode] = useState("styles"); // styles or data
+  const [mapMode, setMapMode] = useState("styles"); // styles or markers
   const [styleMode, setStyleMode] = useState("mapboxStyle"); // mapboxStyle or customMapboxStyle
 
   const [stateMarkers, setStateMarkers] = useState([]);
+  const [markerImg, setMarkerImg] = useState(null);
 
   let [viewport, setViewport] = useState({
     longitude: -77.03968,
@@ -59,7 +60,7 @@ const App = ({}) => {
   React.useEffect(() => {
     // This is how we read messages sent from the plugin controller
     window.onmessage = event => {
-      const { type, message } = event.data.pluginMessage;
+      const { type, message } = event.markers.pluginMessage;
       if (type === "map-drawed") {
         console.log(`Figma Says: ${message}`);
       }
@@ -79,13 +80,29 @@ const App = ({}) => {
           setViewport={setViewport}
           stateMarkers={stateMarkers}
           setStateMarkers={setStateMarkers}
+          mapMode={mapMode}
         />
       </div>
       <div className="side-panel">
         <div className="form-block side-panel__tabs">
-          <button onClick={() => setMapMode("styles")}>Map Styles</button>
-          <button onClick={() => setMapMode("data")}>Data</button>
+          <a
+            href="#"
+            className={mapMode === "styles" ? "active" : ""}
+            onClick={() => setMapMode("styles")}
+          >
+            <img src={require("../assets/styles-icon.svg")} />
+            <span>Map Styles</span>
+          </a>
+          <a
+            href="#"
+            className={mapMode === "markers" ? "active" : ""}
+            onClick={() => setMapMode("markers")}
+          >
+            <img src={require("../assets/markers-icon.svg")} />
+            <span>Markers</span>
+          </a>
         </div>
+        <hr />
         {mapMode === "styles" ? (
           <>
             <MapStylesForm
@@ -120,7 +137,7 @@ const App = ({}) => {
           </>
         ) : (
           <>
-            <MapMarkersForm />
+            <MapMarkersForm setMarkerImg={setMarkerImg} />
           </>
         )}
         <DrawMap
@@ -134,6 +151,7 @@ const App = ({}) => {
           isRetina={isRetina}
           accessToken={accessToken}
           stateMarkers={stateMarkers}
+          markerImg={markerImg}
         />
       </div>
     </div>

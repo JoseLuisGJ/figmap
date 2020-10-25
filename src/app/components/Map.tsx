@@ -14,6 +14,7 @@ interface IMap {
   setViewport: any;
   stateMarkers: any;
   setStateMarkers: any;
+  mapMode: any;
 }
 
 const Map: React.FC<IMap> = ({
@@ -25,7 +26,8 @@ const Map: React.FC<IMap> = ({
   mapboxStyle,
   setViewport,
   stateMarkers,
-  setStateMarkers
+  setStateMarkers,
+  mapMode
 }) => {
   const mapRef = useRef();
   const markerRef = useRef();
@@ -57,17 +59,19 @@ const Map: React.FC<IMap> = ({
     // console.log('mapRef.current is ready for use', mapboxMapRef.current)
   };
   const mapClicked = e => {
-    const newMarker = stateMarkers.concat({
-      id: setMarkerID(markerID + 1),
-      latitude: e.lngLat[1],
-      longitude: e.lngLat[0],
-      x: e.point[0],
-      y: e.point[1],
-      icon: null
-    });
-    setStateMarkers(newMarker);
-    console.log(JSON.stringify(e.point), e.lngLat[0], e.lngLat[1], markerID);
-    console.log("mapClicked =>", stateMarkers);
+    if (mapMode === "markers") {
+      const newMarker = stateMarkers.concat({
+        id: setMarkerID(markerID + 1),
+        latitude: e.lngLat[1],
+        longitude: e.lngLat[0],
+        x: e.point[0],
+        y: e.point[1],
+        icon: null
+      });
+      setStateMarkers(newMarker);
+      console.log(JSON.stringify(e.point), e.lngLat[0], e.lngLat[1], markerID);
+      console.log("mapClicked =>", stateMarkers);
+    }
   };
   return (
     <div>
@@ -96,12 +100,12 @@ const Map: React.FC<IMap> = ({
           <Marker
             ref={markerRef || index}
             key={localState.id}
-            offsetTop={0}
-            offsetLeft={0}
+            offsetTop={-10}
+            offsetLeft={-10}
             latitude={localState.latitude}
             longitude={localState.longitude}
           >
-            <img src="https://img.icons8.com/color/48/000000/marker.png" />
+            <img src={require("../assets/markers-icon.svg")} />
           </Marker>
         ))}
       </ReactMapGL>
