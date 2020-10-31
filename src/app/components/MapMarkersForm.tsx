@@ -19,9 +19,23 @@ const MapMarkerForm: React.FC<IMap> = ({ setMarkerImg }) => {
         <select
           name="marker-component"
           id="marker-component"
-          onChange={e => setMarkerImg(e.currentTarget.value)}
+          onChange={e => {
+            setMarkerImg(e.currentTarget.value);
+            parent.postMessage(
+              {
+                pluginMessage: {
+                  type: "get-components"
+                }
+              },
+              "*"
+            );
+          }}
+          defaultValue="1"
         >
-          <option value="default">Default component</option>
+          <option value="1">Default component</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
         </select>
       </div>
     </div>

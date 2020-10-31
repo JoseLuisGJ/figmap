@@ -60,8 +60,11 @@ const App = ({}) => {
   React.useEffect(() => {
     // This is how we read messages sent from the plugin controller
     window.onmessage = event => {
-      const { type, message } = event.markers.pluginMessage;
+      const { type, message } = event.data.pluginMessage;
       if (type === "map-drawed") {
+        console.log(`Figma Says: ${message}`);
+      }
+      if (type === "components-response") {
         console.log(`Figma Says: ${message}`);
       }
     };
