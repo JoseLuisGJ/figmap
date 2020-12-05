@@ -20,11 +20,13 @@ const App = ({}) => {
   const inputStyleID = useRef(null);
   const inputToken = useRef(null);
 
+  const [figmaComponents, setFigmaComponents] = useState([]);
+
   const [mapMode, setMapMode] = useState("styles"); // styles or markers
   const [styleMode, setStyleMode] = useState("mapboxStyle"); // mapboxStyle or customMapboxStyle
 
   const [stateMarkers, setStateMarkers] = useState([]);
-  const [markerImg, setMarkerImg] = useState(null);
+  const [markerImg, setMarkerImg] = useState(1);
 
   let [viewport, setViewport] = useState({
     longitude: -77.03968,
@@ -65,7 +67,8 @@ const App = ({}) => {
         console.log(`Figma Says: ${message}`);
       }
       if (type === "components-response") {
-        console.log(`Figma Says: ${message}`);
+        //console.log(message);
+        setFigmaComponents(message);
       }
     };
   }, []);
@@ -140,7 +143,11 @@ const App = ({}) => {
           </>
         ) : (
           <>
-            <MapMarkersForm setMarkerImg={setMarkerImg} />
+            <MapMarkersForm
+              figmaComponents={figmaComponents}
+              setFigmaComponents={setFigmaComponents}
+              setMarkerImg={setMarkerImg}
+            />
           </>
         )}
         <DrawMap

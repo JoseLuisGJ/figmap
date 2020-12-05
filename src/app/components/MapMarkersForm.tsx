@@ -3,10 +3,26 @@ import { useEffect } from "react";
 
 interface IMap {
   setMarkerImg: any;
+  figmaComponents: any;
+  setFigmaComponents: any;
 }
 
-const MapMarkerForm: React.FC<IMap> = ({ setMarkerImg }) => {
-  useEffect(() => {});
+const MapMarkerForm: React.FC<IMap> = ({
+  setMarkerImg,
+  figmaComponents,
+  setFigmaComponents
+}) => {
+  useEffect(() => {
+    parent.postMessage(
+      {
+        pluginMessage: {
+          type: "get-components"
+        }
+      },
+      "*"
+    );
+    console.log("ñ", figmaComponents);
+  });
 
   return (
     <div>
@@ -21,21 +37,13 @@ const MapMarkerForm: React.FC<IMap> = ({ setMarkerImg }) => {
           id="marker-component"
           onChange={e => {
             setMarkerImg(e.currentTarget.value);
-            parent.postMessage(
-              {
-                pluginMessage: {
-                  type: "get-components"
-                }
-              },
-              "*"
-            );
           }}
           defaultValue="1"
         >
           <option value="1">Default component</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
+          {figmaComponents.map((localState, index) => (
+            <option value={localState.id}>{localState.id}</option>
+          ))}
         </select>
       </div>
     </div>
