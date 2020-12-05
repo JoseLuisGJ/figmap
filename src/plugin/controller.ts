@@ -5,10 +5,8 @@ const markerSVG: string = `<svg width="16" height="20" viewBox="0 0 16 20" fill=
 <path fill-rule="evenodd" clip-rule="evenodd" d="M0.105713 7.65163C0.105713 11.7697 7.16697 19.3143 7.56215 19.3143L7.56215 11.3811C5.47429 11.381 3.78175 9.6885 3.78175 7.60064C3.78175 5.51278 5.47429 3.82023 7.56215 3.82022L7.56215 0.19519C3.44407 0.19519 0.105713 3.53355 0.105713 7.65163Z" fill="#3EC3FF"/>
 </svg>`;
 const allComponents = figma.root.findAll(c => c.type === "COMPONENT");
-const allComponentsName = allComponents.map(component => {
-  component.name;
-});
-console.log("==>", allComponents);
+const allComponentsName = allComponents.map(component => component.name);
+console.log("==>", allComponentsName);
 figma.showUI(__html__, {
   width: pluginWidth,
   height: pluginHeight
@@ -38,6 +36,7 @@ figma.ui.onmessage = msg => {
       // default marker option
       // Create Master component
       const markerComponent = figma.createComponent();
+      markerComponent.resize(16, 20);
       markerComponent.name = "Default marker component";
       let nodeSVG = figma.createNodeFromSvg(markerSVG);
       markerComponent.appendChild(nodeSVG);
@@ -55,7 +54,7 @@ figma.ui.onmessage = msg => {
     } else {
       //Selected custom component
       let selectedComponent = figma.root.findAll(
-        c => c.id === String(msg.markerImg)
+        c => c.name === msg.markerImg && c.type === "COMPONENT"
       );
       msg.markers.map(marker => {
         let instanceMarker = selectedComponent[0].createInstance();
@@ -88,7 +87,7 @@ figma.ui.onmessage = msg => {
     ////////////////////
     figma.ui.postMessage({
       type: "components-response",
-      message: allComponents
+      message: allComponentsName
     });
   }
 };

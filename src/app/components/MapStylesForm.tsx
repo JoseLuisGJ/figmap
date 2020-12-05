@@ -75,22 +75,28 @@ const MapStylesForm: React.FC<IMap> = ({
             onChange={e => setAccessToken(e.target.value)}
             ref={inputToken}
           />
-
-          <label htmlFor="usernameInput">Mapbox user name</label>
-          <input
-            name="usernameInput"
-            value={username}
-            onChange={e => setUsername(e.target.value)}
-            ref={inputUsername}
-          />
-
-          <label htmlFor="mapStyleInput">Mapbox Style ID</label>
-          <input
-            name="mapStyleInput"
-            value={customStyleID}
-            onChange={e => setCustomStyleID(e.target.value)}
-            ref={inputStyleID}
-          />
+          <div className="container-fluid p-0">
+            <div className="row custom-gutter">
+              <div className="col-6">
+                <label htmlFor="usernameInput">Mapbox user name</label>
+                <input
+                  name="usernameInput"
+                  value={username}
+                  onChange={e => setUsername(e.target.value)}
+                  ref={inputUsername}
+                />
+              </div>
+              <div className="col-6">
+                <label htmlFor="mapStyleInput">Mapbox Style ID</label>
+                <input
+                  name="mapStyleInput"
+                  value={customStyleID}
+                  onChange={e => setCustomStyleID(e.target.value)}
+                  ref={inputStyleID}
+                />
+              </div>
+            </div>
+          </div>
         </div>
       ) : (
         <div className="form-block">

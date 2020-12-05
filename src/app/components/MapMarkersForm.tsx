@@ -42,7 +42,7 @@ const MapMarkerForm: React.FC<IMap> = ({
         >
           <option value="1">Default component</option>
           {figmaComponents.map((localState, index) => (
-            <option value={localState.id}>{localState.id}</option>
+            <option value={localState}>{localState}</option>
           ))}
         </select>
       </div>
