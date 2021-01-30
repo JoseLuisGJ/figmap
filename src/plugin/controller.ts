@@ -32,6 +32,8 @@ figma.ui.onmessage = msg => {
     // Markers //
     /////////////
     const nodes = [];
+    let mapWidthOffset = (mapBoundary - msg.width) / 2;
+    let mapHeightOffset = (mapBoundary - msg.height) / 2;
 
     if (msg.markerImg == 1) {
       // default marker option
@@ -45,12 +47,12 @@ figma.ui.onmessage = msg => {
       markerComponent.y = 0;
       figma.currentPage.appendChild(markerComponent);
       // Instances from master component
-      let mapWidthOffset = (mapBoundary - msg.width) / 2;
-      let mapHeightOffset = (mapBoundary - msg.height) / 2;
       msg.markers.map(marker => {
         let instanceMarker = markerComponent.createInstance();
         instanceMarker.x = marker.x - mapWidthOffset;
         instanceMarker.y = marker.y - mapHeightOffset;
+        instanceMarker.x -= instanceMarker.width / 2;
+        instanceMarker.y -= instanceMarker.height / 2;
         figma.currentPage.appendChild(instanceMarker);
         nodes.push(instanceMarker);
       });
@@ -61,8 +63,10 @@ figma.ui.onmessage = msg => {
       );
       msg.markers.map(marker => {
         let instanceMarker = selectedComponent[0].createInstance();
-        instanceMarker.x = marker.x;
-        instanceMarker.y = marker.y;
+        instanceMarker.x = marker.x - mapWidthOffset;
+        instanceMarker.y = marker.y - mapHeightOffset;
+        instanceMarker.x -= instanceMarker.width / 2;
+        instanceMarker.y -= instanceMarker.height / 2;
         figma.currentPage.appendChild(instanceMarker);
         nodes.push(instanceMarker);
       });
