@@ -40,7 +40,7 @@ const MapMarkerForm: React.FC<IMap> = ({
           }}
           defaultValue="1"
         >
-          <option value="1">Default component</option>
+          <option value="1">Default marker</option>
           {figmaComponents.map((localState, index) => (
             <option value={localState}>{localState}</option>
           ))}

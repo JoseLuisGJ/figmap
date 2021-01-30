@@ -31,7 +31,7 @@ const Map: React.FC<IMap> = ({
 }) => {
   const mapRef = useRef();
   const markerRef = useRef();
-
+  // let mapCursor = styleMode == "customMapboxStyle" ? "default" : "default"; // default
   const [markerID, setMarkerID] = useState(0);
 
   useEffect(() => {});
@@ -73,6 +73,7 @@ const Map: React.FC<IMap> = ({
       console.log("mapClicked =>", stateMarkers);
     }
   };
+
   return (
     <div>
       <ReactMapGL
@@ -88,6 +89,7 @@ const Map: React.FC<IMap> = ({
         height="100%"
         preventStyleDiffing={true}
         onClick={e => mapClicked(e)}
+        getCursor={e => (mapMode === "styles" ? "grab" : "crosshair")}
       >
         <Geocoder
           mapRef={mapRef}
