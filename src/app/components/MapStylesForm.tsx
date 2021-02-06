@@ -108,11 +108,14 @@ const MapStylesForm: React.FC<IMap> = ({
             onChange={e => setMapboxStyle(e.currentTarget.value)}
             defaultValue={mapboxStyle}
           >
-            <option value="streets-v11">streets</option>
-            <option value="light-v10">light</option>
-            <option value="dark-v10">dark</option>
-            <option value="outdoors-v11">outdoors</option>
-            <option value="satellite-v9">satellite</option>
+            <option value="streets-v11">Streets</option>
+            <option value="light-v10">Light</option>
+            <option value="dark-v10">Dark</option>
+            <option value="outdoors-v11">Outdoors</option>
+            <option value="satellite-v9">Satellite</option>
+            <option value="satellite-streets-v11">
+              Satellite with streets
+            </option>
           </select>
         </div>
       )}

@@ -67,7 +67,6 @@ const App = ({}) => {
         console.log(`Figma Says: ${message}`);
       }
       if (type === "components-response") {
-        //console.log(message);
         setFigmaComponents(message);
       }
     };
@@ -145,7 +144,6 @@ const App = ({}) => {
           <>
             <MapMarkersForm
               figmaComponents={figmaComponents}
-              setFigmaComponents={setFigmaComponents}
               setMarkerImg={setMarkerImg}
             />
           </>

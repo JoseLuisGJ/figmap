@@ -4,14 +4,9 @@ import { useEffect } from "react";
 interface IMap {
   setMarkerImg: any;
   figmaComponents: any;
-  setFigmaComponents: any;
 }
 
-const MapMarkerForm: React.FC<IMap> = ({
-  setMarkerImg,
-  figmaComponents,
-  setFigmaComponents
-}) => {
+const MapMarkerForm: React.FC<IMap> = ({ setMarkerImg, figmaComponents }) => {
   useEffect(() => {
     parent.postMessage(
       {
@@ -21,8 +16,8 @@ const MapMarkerForm: React.FC<IMap> = ({
       },
       "*"
     );
-    console.log("ñ", figmaComponents);
-  });
+    // console.log("loop", figmaComponents); // uncontrolled loop
+  }, [figmaComponents]);
 
   return (
     <div>
@@ -42,7 +37,9 @@ const MapMarkerForm: React.FC<IMap> = ({
         >
           <option value="1">Default marker</option>
           {figmaComponents.map((localState, index) => (
-            <option value={localState}>{localState}</option>
+            <option key={index} value={localState}>
+              {localState}
+            </option>
           ))}
         </select>
       </div>

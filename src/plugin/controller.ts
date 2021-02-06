@@ -7,7 +7,7 @@ const markerSVG: string = `<svg width="16" height="20" viewBox="0 0 16 20" fill=
 </svg>`;
 const allComponents = figma.root.findAll(c => c.type === "COMPONENT");
 const allComponentsName = allComponents.map(component => component.name);
-console.log("==>", allComponentsName);
+//console.log("==>", allComponentsName);
 figma.showUI(__html__, {
   width: pluginWidth,
   height: pluginHeight
@@ -18,20 +18,21 @@ figma.ui.onmessage = msg => {
     /////////
     // Map //
     /////////
-
+    const nodes = [];
     let imageHash = figma.createImage(msg.data).hash;
     const rect = figma.createRectangle();
+    rect.name = "Basemap image";
     rect.resize(msg.width, msg.height);
     rect.fills = [{ type: "IMAGE", scaleMode: "FIT", imageHash }];
     figma.currentPage.appendChild(rect);
     // select the rectangle and focus the viewport
     figma.currentPage.selection = [rect];
     figma.viewport.scrollAndZoomIntoView([rect]);
-
+    nodes.push(rect);
     /////////////
     // Markers //
     /////////////
-    const nodes = [];
+
     let mapWidthOffset = (mapBoundary - msg.width) / 2;
     let mapHeightOffset = (mapBoundary - msg.height) / 2;
 
@@ -43,8 +44,8 @@ figma.ui.onmessage = msg => {
       markerComponent.name = "Default marker component";
       let nodeSVG = figma.createNodeFromSvg(markerSVG);
       markerComponent.appendChild(nodeSVG);
-      markerComponent.x = 0;
-      markerComponent.y = 0;
+      markerComponent.x = -100;
+      markerComponent.y = -100;
       figma.currentPage.appendChild(markerComponent);
       // Instances from master component
       msg.markers.map(marker => {
@@ -62,6 +63,7 @@ figma.ui.onmessage = msg => {
         c => c.name === msg.markerImg && c.type === "COMPONENT"
       );
       msg.markers.map(marker => {
+        // @ts-ignore: Unreachable code error
         let instanceMarker = selectedComponent[0].createInstance();
         instanceMarker.x = marker.x - mapWidthOffset;
         instanceMarker.y = marker.y - mapHeightOffset;
@@ -74,6 +76,9 @@ figma.ui.onmessage = msg => {
 
     figma.currentPage.selection = nodes;
     figma.viewport.scrollAndZoomIntoView(nodes);
+    const groupContainer = figma.group(nodes, figma.currentPage);
+    groupContainer.name = "Figmap";
+
     ////////////////////
     // Figma response //
     ////////////////////
@@ -81,7 +86,7 @@ figma.ui.onmessage = msg => {
       type: "map-drawed",
       message: `Map drawed in Figma`
     });
-    console.log("allComponents ", allComponents);
+    //console.log("allComponents ", allComponents);
 
     //////////////////
     // Close plugin //

@@ -1,11 +1,11 @@
 import * as React from "react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import ReactMapGL from "react-map-gl";
 import { Marker } from "react-map-gl";
 import Geocoder from "react-map-gl-geocoder";
-
+import { WebMercatorViewport } from "react-map-gl";
 interface IMap {
-  styleMode: String; // try not to use any.
+  styleMode: String;
   viewport: any;
   accessToken: String;
   username: String;
@@ -31,12 +31,9 @@ const Map: React.FC<IMap> = ({
 }) => {
   const mapRef = useRef();
   const markerRef = useRef();
-  // let mapCursor = styleMode == "customMapboxStyle" ? "default" : "default"; // default
-  const [markerID, setMarkerID] = useState(0);
 
   useEffect(() => {});
 
-  // if you are happy with Geocoder default settings, you can just use handleViewportChange directly
   const handleGeocoderViewportChange = useCallback(newViewport => {
     const geocoderDefaultOverrides = { transitionDuration: 1000 };
 
@@ -45,23 +42,13 @@ const Map: React.FC<IMap> = ({
       ...geocoderDefaultOverrides
     });
   }, []);
-  // const mapboxMapRef = null;
+
   const onLoad = () => {
-    // let map = mapRef.current.getMap();
-    // const coordinate = [-122.420679, 37.772537];
-    // let point = map.project(coordinate);
-    // map.on('mousemove', function (e) {
-    //   console.log( JSON.stringify(e.point))
-    // });
-    // console.log(point);
-    console.log("=>", markerRef);
-    // console.log('mapRef.current is ready for use', )
-    // console.log('mapRef.current is ready for use', mapboxMapRef.current)
+    //console.log("=>", markerRef);
   };
   const mapClicked = e => {
     if (mapMode === "markers") {
       const newMarker = stateMarkers.concat({
-        id: setMarkerID(markerID + 1),
         latitude: e.lngLat[1],
         longitude: e.lngLat[0],
         x: e.point[0],
@@ -69,9 +56,19 @@ const Map: React.FC<IMap> = ({
         icon: null
       });
       setStateMarkers(newMarker);
-      console.log(JSON.stringify(e.point), e.lngLat[0], e.lngLat[1], markerID);
-      console.log("mapClicked =>", stateMarkers);
+      //console.log(JSON.stringify(e.point), e.lngLat[0], e.lngLat[1], markerID);
+      //console.log("mapClicked =>", stateMarkers);
     }
+  };
+
+  const onViewportChange = viewport => {
+    const v = new WebMercatorViewport(viewport);
+    for (const marker of stateMarkers) {
+      const [x, y] = v.project([marker.longitude, marker.latitude]);
+      marker.x = x;
+      marker.y = y;
+    }
+    setViewport(viewport);
   };
 
   return (
@@ -80,7 +77,7 @@ const Map: React.FC<IMap> = ({
         {...viewport}
         ref={mapRef}
         onLoad={onLoad}
-        onViewportChange={nextViewport => setViewport(nextViewport)}
+        onViewportChange={nextViewport => onViewportChange(nextViewport)}
         mapboxApiAccessToken={accessToken}
         mapStyle={`mapbox://styles/${
           styleMode == "customMapboxStyle" ? username : "mapbox"
@@ -89,7 +86,7 @@ const Map: React.FC<IMap> = ({
         height="100%"
         preventStyleDiffing={true}
         onClick={e => mapClicked(e)}
-        getCursor={e => (mapMode === "styles" ? "grab" : "crosshair")}
+        getCursor={() => (mapMode === "styles" ? "grab" : "crosshair")}
       >
         <Geocoder
           mapRef={mapRef}
@@ -101,7 +98,7 @@ const Map: React.FC<IMap> = ({
         {stateMarkers.map((localState, index) => (
           <Marker
             ref={markerRef || index}
-            key={localState.id}
+            key={index}
             offsetTop={-10}
             offsetLeft={-10}
             latitude={localState.latitude}
