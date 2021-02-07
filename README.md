@@ -4,7 +4,7 @@
 
 [Go to Figmap](https://www.figma.com/community/plugin/937760472566581732/Figmap)
 
-Get an image from Mapbox default styles or your custom map style created with Mapbox Studio. You can change the map properties like latitude, longitude, zoom, bearing or pitch over the map or using the field controls. Also you can configure the width, height and retina ready of the image to get it in Figma.
+Get an image from Mapbox default styles or your custom map style created with [Mapbox Studio](https://www.mapbox.com/mapbox-studio). You can change the map properties like latitude, longitude, zoom, bearing or pitch over the map or using the field controls. Also you can configure the width, height and retina ready of the image to get it in Figma.
 
 Besides you can add markers linked to your existing Figma components or create a default one from scratch
 
