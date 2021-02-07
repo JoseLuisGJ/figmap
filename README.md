@@ -12,6 +12,8 @@ Get in mind the image obtained in Figma doesn't have Mapbox logo neither attribu
 
 Template based on [Figma Plugin React Template](https://github.com/nirsky/figma-plugin-react-template) This template contains the react example as shown on [Figma Docs](https://www.figma.com/plugin-docs/intro/), with some structural changes and extra tooling.
 
+## Figmap in action
+![Figmap in action](https://github.com/ergum/figmap/blob/master/src/app/assets/FigmapInAction.gif?raw=true) 
 ## Quickstart
 * Run `yarn` to install dependencies.
 * Run `yarn build:watch` to start webpack in watch mode.
