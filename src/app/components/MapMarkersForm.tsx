@@ -42,6 +42,14 @@ const MapMarkerForm: React.FC<IMap> = ({
       }));
 
       setStateMarkers(stateMarkers.concat(newMarkers));
+      parent.postMessage(
+        {
+          pluginMessage: {
+            type: "notification"
+          }
+        },
+        "*"
+      );
     };
 
     reader.readAsText(file);
