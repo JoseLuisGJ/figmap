@@ -223,3 +223,10 @@ hr {
 .markers-mode {
   padding-top: 6px;
 }
+
+.drag-and-drop-zone {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  border: 1px dashed #4aa1f3;
+  border-radius: 5px;
+}

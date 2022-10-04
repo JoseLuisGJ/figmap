@@ -43,6 +43,13 @@ const App = ({}) => {
       [e.target.name]: Number(value)
     });
   };
+  const handleViewportChangeFileLoaded = (lat, lon) => {
+    setViewport({
+      ...viewport,
+      latitude: Number(lat),
+      longitude: Number(lon)
+    });
+  };
   const [mapExportWidth, setMapExportWidth] = useState(800);
   const [mapExportHeight, setMapExportHeight] = useState(600);
   const [isRetina, setIsRetina] = useState(false);
@@ -145,6 +152,9 @@ const App = ({}) => {
             <MapMarkersForm
               figmaComponents={figmaComponents}
               setMarkerImg={setMarkerImg}
+              stateMarkers={stateMarkers}
+              setStateMarkers={setStateMarkers}
+              handleViewportChangeFileLoaded={handleViewportChangeFileLoaded}
             />
           </>
         )}

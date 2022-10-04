@@ -102,4 +102,12 @@ figma.ui.onmessage = msg => {
       message: allComponentsName
     });
   }
+  if (msg.type === "notification") {
+    const notificationHandler = figma.notify("GPX file loaded", {
+      timeout: 6000
+    });
+    return function(): void {
+      notificationHandler.cancel();
+    };
+  }
 };
