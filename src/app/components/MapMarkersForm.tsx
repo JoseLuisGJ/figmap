@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useEffect } from "react";
-import Dropzone from 'react-dropzone'
+import Dropzone from "react-dropzone";
 import gpxParser from "gpxParser";
 
 interface IMap {
@@ -10,7 +10,12 @@ interface IMap {
   setStateMarkers: any;
 }
 
-const MapMarkerForm: React.FC<IMap> = ({ setMarkerImg, stateMarkers, setStateMarkers, figmaComponents }) => {
+const MapMarkerForm: React.FC<IMap> = ({
+  setMarkerImg,
+  stateMarkers,
+  setStateMarkers,
+  figmaComponents
+}) => {
   useEffect(() => {
     parent.postMessage(
       {
@@ -23,20 +28,18 @@ const MapMarkerForm: React.FC<IMap> = ({ setMarkerImg, stateMarkers, setStateMar
     // console.log("loop", figmaComponents); // uncontrolled loop
   }, [figmaComponents]);
 
-  const onDropGPX = (file) => {
+  const onDropGPX = file => {
     var reader = new FileReader();
     reader.onload = function(event) {
       let contents = event.target.result;
       let gpx = new gpxParser();
       gpx.parse("" + contents);
 
-      let newMarkers = gpx.waypoints.map(
-        waypoint => ({
-          longitude: waypoint.lon,
-          latitude: waypoint.lat,
-          icon: null
-        })
-      );
+      let newMarkers = gpx.waypoints.map(waypoint => ({
+        longitude: waypoint.lon,
+        latitude: waypoint.lat,
+        icon: null
+      }));
 
       setStateMarkers(stateMarkers.concat(newMarkers));
     };
@@ -47,24 +50,26 @@ const MapMarkerForm: React.FC<IMap> = ({ setMarkerImg, stateMarkers, setStateMar
   return (
     <div>
       <div className="form-block markers-mode">
-        <p>
-          Click over map to create your markers. Then link your custom Figma
-          component or start from scratch.
-        </p>
-        <p>
-          OR
-        </p>
-        <Dropzone onDrop={acceptedFiles => {onDropGPX(acceptedFiles[0])}}>
-          {({getRootProps, getInputProps}) => (
+        <p>1. Click over the map to create your markers or:</p>
+        <Dropzone
+          onDrop={acceptedFiles => {
+            onDropGPX(acceptedFiles[0]);
+          }}
+        >
+          {({ getRootProps, getInputProps }) => (
             <section>
               <div {...getRootProps()}>
                 <input {...getInputProps()} />
-                <p className="form-block drag-and-drop-zone">Drag and drop file with markers in GPX format.</p>
+                <p className="form-block drag-and-drop-zone">
+                  Drag and drop file with markers in GPX format.
+                </p>
               </div>
             </section>
           )}
         </Dropzone>
-
+        <p>
+          2. Then link your custom Figma marker component or use a default one:
+        </p>
         <label htmlFor="marker-component">Marker component</label>
         <select
           name="marker-component"
