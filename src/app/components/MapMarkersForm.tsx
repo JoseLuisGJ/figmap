@@ -8,13 +8,15 @@ interface IMap {
   figmaComponents: any;
   stateMarkers: any;
   setStateMarkers: any;
+  handleViewportChangeFileLoaded: any;
 }
 
 const MapMarkerForm: React.FC<IMap> = ({
   setMarkerImg,
   stateMarkers,
   setStateMarkers,
-  figmaComponents
+  figmaComponents,
+  handleViewportChangeFileLoaded
 }) => {
   useEffect(() => {
     parent.postMessage(
@@ -49,6 +51,10 @@ const MapMarkerForm: React.FC<IMap> = ({
           }
         },
         "*"
+      );
+      handleViewportChangeFileLoaded(
+        newMarkers[0].latitude,
+        newMarkers[0].longitude
       );
     };
 
