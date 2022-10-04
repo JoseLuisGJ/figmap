@@ -9,8 +9,10 @@
 		"prettier:format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,css,json}' "
 	},
 	"dependencies": {
+		"gpxparser": "^3.0.8",
 		"react": "^16.13.1",
 		"react-dom": "^16.13.1",
+		"react-dropzone": "^14.2.2",
 		"react-map-gl-geocoder": "^2.1.5",
 		"viewport-mercator-project": "^7.0.1"
 	},

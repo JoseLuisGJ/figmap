@@ -145,6 +145,8 @@ const App = ({}) => {
             <MapMarkersForm
               figmaComponents={figmaComponents}
               setMarkerImg={setMarkerImg}
+              stateMarkers={stateMarkers}
+              setStateMarkers={setStateMarkers}
             />
           </>
         )}
