@@ -154,6 +154,7 @@ const App = ({}) => {
               setMarkerImg={setMarkerImg}
               stateMarkers={stateMarkers}
               setStateMarkers={setStateMarkers}
+              viewport={viewport}
               handleViewportChangeFileLoaded={handleViewportChangeFileLoaded}
             />
           </>

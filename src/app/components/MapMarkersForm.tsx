@@ -2,12 +2,14 @@ import * as React from "react";
 import { useEffect } from "react";
 import Dropzone from "react-dropzone";
 import gpxParser from "gpxParser";
+import { WebMercatorViewport } from "react-map-gl";
 
 interface IMap {
   setMarkerImg: any;
   figmaComponents: any;
   stateMarkers: any;
   setStateMarkers: any;
+  viewport: any;
   handleViewportChangeFileLoaded: any;
 }
 
@@ -16,6 +18,7 @@ const MapMarkerForm: React.FC<IMap> = ({
   stateMarkers,
   setStateMarkers,
   figmaComponents,
+  viewport,
   handleViewportChangeFileLoaded
 }) => {
   useEffect(() => {
@@ -36,12 +39,29 @@ const MapMarkerForm: React.FC<IMap> = ({
       let contents = event.target.result;
       let gpx = new gpxParser();
       gpx.parse("" + contents);
+      let waypoints = gpx.waypoints;
 
-      let newMarkers = gpx.waypoints.map(waypoint => ({
-        longitude: waypoint.lon,
-        latitude: waypoint.lat,
-        icon: null
-      }));
+      if (waypoints.length == 0) {
+        return;
+      }
+
+      let nextViewport = {
+        ...viewport,
+        latitude: Number(waypoints[0].lat),
+        longitude: Number(waypoints[0].lon)
+      };
+      const v = new WebMercatorViewport(nextViewport);
+      let newMarkers = waypoints.map(waypoint => {
+        const [x, y] = v.project([waypoint.lon, waypoint.lat]);
+        return {
+          longitude: waypoint.lon,
+          latitude: waypoint.lat,
+          x: x,
+          y: y,
+          name: waypoint.name,
+          icon: null
+        };
+      });
 
       setStateMarkers(stateMarkers.concat(newMarkers));
       parent.postMessage(
@@ -53,8 +73,8 @@ const MapMarkerForm: React.FC<IMap> = ({
         "*"
       );
       handleViewportChangeFileLoaded(
-        newMarkers[0].latitude,
-        newMarkers[0].longitude
+        nextViewport.latitude,
+        nextViewport.longitude
       );
     };
 
