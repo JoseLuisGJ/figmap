@@ -69,6 +69,17 @@ figma.ui.onmessage = msg => {
         instanceMarker.y = marker.y - mapHeightOffset;
         instanceMarker.x -= instanceMarker.width / 2;
         instanceMarker.y -= instanceMarker.height / 2;
+
+        if (marker.name) {
+          for (var customProperty of instanceMarker.componentProperties) {
+            if (customProperty["type"] == "TEXT") {
+              instanceMarker.setProperties({
+                customProperty: marker.name
+              });
+              break;
+            }
+          }
+        }
         figma.currentPage.appendChild(instanceMarker);
         nodes.push(instanceMarker);
       });
