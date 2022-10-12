@@ -66,17 +66,46 @@ const App = ({}) => {
   );
 
   React.useEffect(() => {
+    parent.postMessage(
+      {
+        pluginMessage: {
+          type: "read-storage"
+        }
+      },
+      "*"
+    );
+
     // This is how we read messages sent from the plugin controller
     window.onmessage = event => {
-      const { type, message } = event.data.pluginMessage;
+      const { type, message, storage } = event.data.pluginMessage;
       if (type === "map-drawed") {
         console.log(`Figma Says: ${message}`);
       }
       if (type === "components-response") {
         setFigmaComponents(message);
       }
+
+      if (type === "fetched username") {
+        setUsername(storage);
+      }
+      if (type === "fetched custom style") {
+        setCustomStyleID(storage);
+      }
     };
   }, []);
+
+  React.useEffect(() => {
+    parent.postMessage(
+      {
+        pluginMessage: {
+          type: "update-storage",
+          user: username,
+          style: customStyleID
+        }
+      },
+      "*"
+    );
+  }, [username, customStyleID]);
 
   return (
     <div className="main-wrapper">

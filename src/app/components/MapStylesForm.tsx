@@ -60,6 +60,7 @@ const MapStylesForm: React.FC<IMap> = ({
       <hr />
       {styleMode === "customMapboxStyle" ? (
         <div className="form-block">
+          <h2>Your Mapbox map access</h2>
           <div className="container-fluid p-0">
             <div className="row custom-gutter">
               <div className="col-6">
