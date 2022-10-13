@@ -121,4 +121,33 @@ figma.ui.onmessage = msg => {
       notificationHandler.cancel();
     };
   }
+  if (msg.type === "update-storage") {
+    figma.clientStorage.setAsync("_username", msg.user);
+    figma.clientStorage.setAsync("_customStyleID", msg.style);
+  }
+  if (msg.type === "read-storage") {
+    figma.clientStorage.getAsync("_username").then(result => {
+      figma.ui.postMessage({
+        type: "fetched username",
+        storage: result
+      });
+    });
+    figma.clientStorage.getAsync("_customStyleID").then(result => {
+      figma.ui.postMessage({
+        type: "fetched custom style",
+        storage: result
+      });
+    });
+    // figma.notify("We restored your map. Default values were: 'ergum' 'ckg6ps8s62b5e19nrr67wqw9u'", {
+    //   timeout: 6000
+    // });
+  }
+  if (msg.type === "notify-storage") {
+    figma.notify(
+      "💾 We restored your Mapbox user and Style ID. Default values were: 'ergum' 'ckg6ps8s62b5e19nrr67wqw9u'",
+      {
+        timeout: 6000
+      }
+    );
+  }
 };

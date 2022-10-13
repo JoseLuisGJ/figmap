@@ -18,7 +18,6 @@ declare function require(path: string): any;
 const App = ({}) => {
   const inputUsername = useRef(null);
   const inputStyleID = useRef(null);
-  const inputToken = useRef(null);
 
   const [figmaComponents, setFigmaComponents] = useState([]);
 
@@ -62,22 +61,76 @@ const App = ({}) => {
     "ckg6ps8s62b5e19nrr67wqw9u"
   );
   const [mapboxStyle, setMapboxStyle] = useState("streets-v11");
-  const [accessToken, setAccessToken] = useState(
+  const [accessToken] = useState(
     "pk.eyJ1IjoiZXJndW0iLCJhIjoiY2tnNnB1dzdnMTZzMTJybzVoY245bWs3biJ9.ZSHQTE9yUrMB6CPmEEEsfQ"
   );
 
   React.useEffect(() => {
+    parent.postMessage(
+      {
+        pluginMessage: {
+          type: "read-storage"
+        }
+      },
+      "*"
+    );
+
     // This is how we read messages sent from the plugin controller
     window.onmessage = event => {
-      const { type, message } = event.data.pluginMessage;
+      const { type, message, storage } = event.data.pluginMessage;
       if (type === "map-drawed") {
         console.log(`Figma Says: ${message}`);
       }
       if (type === "components-response") {
         setFigmaComponents(message);
       }
+
+      let notifyStorage = false;
+      if (
+        type === "fetched username" &&
+        storage != undefined &&
+        storage != "ergum"
+      ) {
+        setUsername(storage);
+        console.log("setUsername --->", storage);
+        notifyStorage = true;
+      }
+      if (
+        type === "fetched custom style" &&
+        storage != undefined &&
+        storage != "ckg6ps8s62b5e19nrr67wqw9u"
+      ) {
+        setCustomStyleID(storage);
+        console.log("setCustomStyleID --->", storage);
+        notifyStorage = true;
+      }
+      if (notifyStorage) {
+        parent.postMessage(
+          {
+            pluginMessage: {
+              type: "notify-storage",
+              user: username,
+              style: customStyleID
+            }
+          },
+          "*"
+        );
+      }
     };
   }, []);
+
+  React.useEffect(() => {
+    parent.postMessage(
+      {
+        pluginMessage: {
+          type: "update-storage",
+          user: username,
+          style: customStyleID
+        }
+      },
+      "*"
+    );
+  }, [username, customStyleID]);
 
   return (
     <div className="main-wrapper">
@@ -119,13 +172,10 @@ const App = ({}) => {
           <>
             <MapStylesForm
               styleMode={styleMode}
-              accessToken={accessToken}
               username={username}
               customStyleID={customStyleID}
               mapboxStyle={mapboxStyle}
-              setAccessToken={setAccessToken}
               setUsername={setUsername}
-              inputToken={inputToken}
               inputUsername={inputUsername}
               inputStyleID={inputStyleID}
               setCustomStyleID={setCustomStyleID}
