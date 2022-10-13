@@ -13,6 +13,7 @@ interface IMap {
   accessToken: any;
   stateMarkers: any;
   markerImg: any;
+  editor: any;
 }
 
 const DrawMap: React.FC<IMap> = ({
@@ -26,7 +27,8 @@ const DrawMap: React.FC<IMap> = ({
   isRetina,
   accessToken,
   stateMarkers,
-  markerImg
+  markerImg,
+  editor
 }) => {
   useEffect(() => {});
 
@@ -64,7 +66,7 @@ const DrawMap: React.FC<IMap> = ({
     <div>
       <div className="side-panel__footer p-2">
         <button id="draw-map" className="primary" onClick={onDrawMap}>
-          Draw map to Figma
+          Draw map to {editor === "figma" ? <>Figma</> : <>FigJam</>}
         </button>
       </div>
     </div>

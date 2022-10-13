@@ -20,6 +20,7 @@ const App = ({}) => {
   const inputStyleID = useRef(null);
 
   const [figmaComponents, setFigmaComponents] = useState([]);
+  const [editor, setEditor] = useState("figma");
 
   const [mapMode, setMapMode] = useState("styles"); // styles or markers
   const [styleMode, setStyleMode] = useState("mapboxStyle"); // mapboxStyle or customMapboxStyle
@@ -74,6 +75,14 @@ const App = ({}) => {
       },
       "*"
     );
+    parent.postMessage(
+      {
+        pluginMessage: {
+          type: "ask-editorType"
+        }
+      },
+      "*"
+    );
 
     // This is how we read messages sent from the plugin controller
     window.onmessage = event => {
@@ -83,6 +92,9 @@ const App = ({}) => {
       }
       if (type === "components-response") {
         setFigmaComponents(message);
+      }
+      if (type === "sending-editor") {
+        setEditor(storage);
       }
 
       let notifyStorage = false;
@@ -221,6 +233,7 @@ const App = ({}) => {
           accessToken={accessToken}
           stateMarkers={stateMarkers}
           markerImg={markerImg}
+          editor={editor}
         />
       </div>
     </div>
