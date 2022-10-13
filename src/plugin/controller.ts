@@ -138,5 +138,16 @@ figma.ui.onmessage = msg => {
         storage: result
       });
     });
+    // figma.notify("We restored your map. Default values were: 'ergum' 'ckg6ps8s62b5e19nrr67wqw9u'", {
+    //   timeout: 6000
+    // });
+  }
+  if (msg.type === "notify-storage") {
+    figma.notify(
+      "💾 We restored your Mapbox user and Style ID. Default values were: 'ergum' 'ckg6ps8s62b5e19nrr67wqw9u'",
+      {
+        timeout: 6000
+      }
+    );
   }
 };

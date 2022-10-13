@@ -85,11 +85,36 @@ const App = ({}) => {
         setFigmaComponents(message);
       }
 
-      if (type === "fetched username") {
+      let notifyStorage = false;
+      if (
+        type === "fetched username" &&
+        storage != undefined &&
+        storage != "ergum"
+      ) {
         setUsername(storage);
+        console.log("setUsername --->", storage);
+        notifyStorage = true;
       }
-      if (type === "fetched custom style") {
+      if (
+        type === "fetched custom style" &&
+        storage != undefined &&
+        storage != "ckg6ps8s62b5e19nrr67wqw9u"
+      ) {
         setCustomStyleID(storage);
+        console.log("setCustomStyleID --->", storage);
+        notifyStorage = true;
+      }
+      if (notifyStorage) {
+        parent.postMessage(
+          {
+            pluginMessage: {
+              type: "notify-storage",
+              user: username,
+              style: customStyleID
+            }
+          },
+          "*"
+        );
       }
     };
   }, []);
