@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useState, useRef } from "react";
+import * as mixpanel from "mixpanel-figma";
 
 import "mapbox-gl/dist/mapbox-gl.css";
 import "react-map-gl-geocoder/dist/mapbox-gl-geocoder.css";
@@ -66,7 +67,35 @@ const App = ({}) => {
     "pk.eyJ1IjoiZXJndW0iLCJhIjoiY2tnNnB1dzdnMTZzMTJybzVoY245bWs3biJ9.ZSHQTE9yUrMB6CPmEEEsfQ"
   );
 
+  mixpanel.init("bb720f8aaaa0d68a225c4dc20cb584aa", {
+    disable_cookie: true,
+    disable_persistence: true
+  });
+  /*   const getUserId = async () => {
+    let userId = uuid();
+  
+    try {
+      const id = await figma.clientStorage.getAsync('userId')
+  
+      if (typeof id === 'undefined') {
+        figma.clientStorage.setAsync('userId', userId)
+      } else {
+        userId = id
+      }
+    } catch (e) {
+      console.error('userId retrieving error', e)
+      figma.clientStorage.setAsync('userId', userId)
+    }
+  
+    return userId
+  } */
+  // get or set if not yet set.
+  // const userId = await getUserId();
+  // send to iframe
+  // figma.ui.postMessage(userId)
+
   React.useEffect(() => {
+    mixpanel.track("plugin-loaded");
     parent.postMessage(
       {
         pluginMessage: {
@@ -165,7 +194,10 @@ const App = ({}) => {
           <a
             href="#"
             className={mapMode === "styles" ? "active" : ""}
-            onClick={() => setMapMode("styles")}
+            onClick={() => {
+              setMapMode("styles");
+              mixpanel.track("styles-clicked");
+            }}
           >
             <img src={require("../assets/styles-icon.svg")} />
             <span>Map Styles</span>
@@ -173,7 +205,10 @@ const App = ({}) => {
           <a
             href="#"
             className={mapMode === "markers" ? "active" : ""}
-            onClick={() => setMapMode("markers")}
+            onClick={() => {
+              setMapMode("markers");
+              mixpanel.track("markers-clicked");
+            }}
           >
             <img src={require("../assets/markers-icon.svg")} />
             <span>Markers</span>
