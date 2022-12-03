@@ -1,5 +1,5 @@
 {
-	"name": "Figmap",
+	"name": "figmap",
 	"version": "1.0.0",
 	"description": "This plugin template uses Typescript. If you are familiar with Javascript, Typescript will look very familiar. In fact, valid Javascript code is already valid Typescript code.",
 	"license": "ISC",
@@ -10,6 +10,7 @@
 	},
 	"dependencies": {
 		"gpxparser": "^3.0.8",
+		"mixpanel-figma": "^2.0.1",
 		"react": "^16.13.1",
 		"react-dom": "^16.13.1",
 		"react-dropzone": "^14.2.2",

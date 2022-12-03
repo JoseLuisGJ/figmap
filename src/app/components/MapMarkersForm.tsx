@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import Dropzone from "react-dropzone";
 import gpxParser from "gpxParser";
 import { WebMercatorViewport } from "react-map-gl";
+import * as mixpanel from "mixpanel-figma";
 
 interface IMap {
   setMarkerImg: any;
@@ -35,7 +36,9 @@ const MapMarkerForm: React.FC<IMap> = ({
 
   const onDropGPX = file => {
     var reader = new FileReader();
+    mixpanel.track("file-dropped");
     reader.onload = function(event) {
+      mixpanel.track("file-loaded");
       let contents = event.target.result;
       let gpx = new gpxParser();
       gpx.parse("" + contents);

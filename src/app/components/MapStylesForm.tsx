@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useEffect } from "react";
+import * as mixpanel from "mixpanel-figma";
 
 interface IMap {
   styleMode: String; // try not to use any.
@@ -39,6 +40,7 @@ const MapStylesForm: React.FC<IMap> = ({
           defaultChecked={styleMode === "mapboxStyle"}
           onClick={() => {
             setStyleMode("mapboxStyle");
+            mixpanel.track("mapbox-default-styles");
           }}
         />
         <label htmlFor="mapboxStyle" className="mr-3">
@@ -53,6 +55,7 @@ const MapStylesForm: React.FC<IMap> = ({
           defaultChecked={styleMode === "customMapboxStyle"}
           onClick={() => {
             setStyleMode("customMapboxStyle");
+            mixpanel.track("custom-mapbox-style");
           }}
         />
         <label htmlFor="customMapboxStyle"> Custom style</label>
@@ -91,7 +94,12 @@ const MapStylesForm: React.FC<IMap> = ({
           <select
             name="mapbox-styles"
             id="mapbox-styles"
-            onChange={e => setMapboxStyle(e.currentTarget.value)}
+            onChange={e => {
+              setMapboxStyle(e.currentTarget.value);
+              mixpanel.track("mapbox-style-selected", {
+                value: e.currentTarget.value
+              });
+            }}
             defaultValue={mapboxStyle}
           >
             <option value="streets-v11">Streets</option>

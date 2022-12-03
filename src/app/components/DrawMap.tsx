@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useEffect } from "react";
+import * as mixpanel from "mixpanel-figma";
 
 interface IMap {
   username: any;
@@ -33,6 +34,7 @@ const DrawMap: React.FC<IMap> = ({
   useEffect(() => {});
 
   const onDrawMap = () => {
+    mixpanel.track("map-drown");
     console.log("onDrawMap =>", stateMarkers);
     let imurl = `https://api.mapbox.com/styles/v1/${
       styleMode == "customMapboxStyle" ? username : "mapbox"

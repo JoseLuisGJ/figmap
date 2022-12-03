@@ -30,10 +30,10 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@figma/plugin-typings@^1.15.0":
-  version "1.15.0"
-  resolved "https://registry.yarnpkg.com/@figma/plugin-typings/-/plugin-typings-1.15.0.tgz#7563639f2ee44b118a136be78d754fa2cc4f3ede"
-  integrity sha512-Lr6QShIKlQNW9qdnneGr5+TIXH+EvapyfDvaaZHj7rACqIEslkZmH1mV4AmQHEs9FK5rqJMmKfSkNUNM2fztPg==
+"@figma/plugin-typings@^1.33.0":
+  version "1.55.1"
+  resolved "https://registry.yarnpkg.com/@figma/plugin-typings/-/plugin-typings-1.55.1.tgz#b974e929c2d1bdf051104ec89701b25c8ac2bcd7"
+  integrity sha512-gNyAFMA83oNJ8X4xrMjs49CCPwfRRdNepvZUx4gxS5/GBnZqV+rhEkM9crgJrynrE1VgxILLjQIPgUxxSNBWJQ==
 
 "@mapbox/fusspot@^0.4.0":
   version "0.4.0"
@@ -3597,6 +3597,11 @@ mixin-deep@^1.2.0:
   dependencies:
     for-in "^1.0.2"
     is-extendable "^1.0.1"
+
+mixpanel-figma@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/mixpanel-figma/-/mixpanel-figma-2.0.1.tgz#3936f6fc133b848e22235f2275c341a73eb905fb"
+  integrity sha512-p+xWU/dA04IqpjEOzdf3eZGCh3yWCZSc5SsmW2WZU4zTFh4p2h6OJmt7pqozYlXjY4p3+7BXmRFdoAand3uArw==
 
 mjolnir.js@^2.4.0:
   version "2.4.1"
