@@ -186,3 +186,39 @@ figma.ui.onmessage = msg => {
     });
   }
 };
+///////////////////
+// Figma payment //
+///////////////////
+
+// Force payment status to be unpaid for development
+type _PaymentStatus = {
+  type: "UNPAID" | "PAID";
+};
+const paymentStatus: _PaymentStatus = { type: "UNPAID" };
+figma.payments.setPaymentStatusInDevelopment(paymentStatus);
+//
+async function run() {
+  if (figma.payments.status.type === "PAID") {
+    figma.notify("USER HAS PAID");
+  } else {
+    // figma.payments.status.type === "UNPAID"
+    const ONE_DAY_IN_SECONDS = 60 * 60 * 24;
+    const secondsSinceFirstRun = figma.payments.getUserFirstRanSecondsAgo();
+    const daysSinceFirstRun = secondsSinceFirstRun / ONE_DAY_IN_SECONDS;
+    if (daysSinceFirstRun > 3) {
+      await figma.payments.initiateCheckoutAsync({
+        interstitial: "TRIAL_ENDED"
+      });
+      if (figma.payments.status.type === "UNPAID") {
+        figma.notify("USER CANCELLED CHECKOUT");
+      } else {
+        figma.notify("USER JUST PAID");
+      }
+    } else {
+      figma.notify("USER IS IN THREE DAY TRIAL PERIOD");
+    }
+  }
+  // figma.closePlugin();
+}
+
+run();
