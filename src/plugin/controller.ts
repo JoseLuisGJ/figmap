@@ -197,28 +197,33 @@ type _PaymentStatus = {
 const paymentStatus: _PaymentStatus = { type: "UNPAID" };
 figma.payments.setPaymentStatusInDevelopment(paymentStatus);
 //
-async function run() {
-  if (figma.payments.status.type === "PAID") {
-    figma.notify("USER HAS PAID");
-  } else {
-    // figma.payments.status.type === "UNPAID"
-    const ONE_DAY_IN_SECONDS = 60 * 60 * 24;
-    const secondsSinceFirstRun = figma.payments.getUserFirstRanSecondsAgo();
-    const daysSinceFirstRun = secondsSinceFirstRun / ONE_DAY_IN_SECONDS;
-    if (daysSinceFirstRun > 3) {
+async function runPaymentDetect() {
+  if (figma.payments.status.type === "UNPAID") {
+    const usageCount = (await figma.clientStorage.getAsync("usage-count")) || 0;
+    const maxUsages = 15;
+    if (usageCount >= maxUsages) {
       await figma.payments.initiateCheckoutAsync({
         interstitial: "TRIAL_ENDED"
       });
       if (figma.payments.status.type === "UNPAID") {
-        figma.notify("USER CANCELLED CHECKOUT");
+        figma.notify(
+          "You have run out of free usages of this plugin. Buy me a ☕️ to continue using it.",
+          {
+            timeout: 6000
+          }
+        );
+        figma.closePlugin();
+        return;
       } else {
-        figma.notify("USER JUST PAID");
+        figma.notify("🎉 Thanks for purchasing it.");
       }
     } else {
-      figma.notify("USER IS IN THREE DAY TRIAL PERIOD");
+      await figma.clientStorage.setAsync("usage-count", usageCount + 1);
+      figma.notify("ℹ️ " + usageCount + "/" + maxUsages + " free trials.", {
+        timeout: 6000
+      });
     }
   }
-  // figma.closePlugin();
 }
 
-run();
+runPaymentDetect();
