@@ -194,7 +194,7 @@ figma.ui.onmessage = msg => {
 type _PaymentStatus = {
   type: "UNPAID" | "PAID";
 };
-const paymentStatus: _PaymentStatus = { type: "UNPAID" };
+const paymentStatus: _PaymentStatus = { type: "PAID" };
 figma.payments.setPaymentStatusInDevelopment(paymentStatus);
 //
 async function runPaymentDetect() {

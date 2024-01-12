@@ -19,6 +19,7 @@ declare function require(path: string): any;
 const App = ({}) => {
   const inputUsername = useRef(null);
   const inputStyleID = useRef(null);
+  const inputToken = useRef(null);
 
   const [figmaComponents, setFigmaComponents] = useState([]);
   const [editor, setEditor] = useState("figma");
@@ -63,7 +64,7 @@ const App = ({}) => {
     "ckg6ps8s62b5e19nrr67wqw9u"
   );
   const [mapboxStyle, setMapboxStyle] = useState("streets-v11");
-  const [accessToken] = useState(
+  const [accessToken, setAccessToken] = useState(
     "pk.eyJ1IjoiZXJndW0iLCJhIjoiY2tnNnB1dzdnMTZzMTJybzVoY245bWs3biJ9.ZSHQTE9yUrMB6CPmEEEsfQ"
   );
 
@@ -171,7 +172,8 @@ const App = ({}) => {
       },
       "*"
     );
-  }, [username, customStyleID]);
+    console.log(username, customStyleID, accessToken);
+  }, [username, customStyleID, accessToken]);
 
   return (
     <div className="main-wrapper">
@@ -219,10 +221,13 @@ const App = ({}) => {
           <>
             <MapStylesForm
               styleMode={styleMode}
+              accessToken={accessToken}
               username={username}
               customStyleID={customStyleID}
               mapboxStyle={mapboxStyle}
+              setAccessToken={setAccessToken}
               setUsername={setUsername}
+              inputToken={inputToken}
               inputUsername={inputUsername}
               inputStyleID={inputStyleID}
               setCustomStyleID={setCustomStyleID}

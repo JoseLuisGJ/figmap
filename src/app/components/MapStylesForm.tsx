@@ -4,10 +4,13 @@ import * as mixpanel from "mixpanel-figma";
 
 interface IMap {
   styleMode: String; // try not to use any.
+  accessToken: any;
   username: any;
   customStyleID: any;
   mapboxStyle: any;
+  setAccessToken: any;
   setUsername: any;
+  inputToken: any;
   inputUsername: any;
   inputStyleID: any;
   setCustomStyleID: any;
@@ -17,10 +20,13 @@ interface IMap {
 
 const MapStylesForm: React.FC<IMap> = ({
   styleMode,
+  accessToken,
   username,
   customStyleID,
   mapboxStyle,
+  setAccessToken,
   setUsername,
+  inputToken,
   inputUsername,
   inputStyleID,
   setCustomStyleID,
@@ -63,7 +69,16 @@ const MapStylesForm: React.FC<IMap> = ({
       <hr />
       {styleMode === "customMapboxStyle" ? (
         <div className="form-block">
-          <h2>Your Mapbox map access</h2>
+          {/* <h2>Your Mapbox map access</h2> */}
+          <h2>Mapbox custom style</h2>
+          <label htmlFor="tokenInput">Mapbox API access token</label>
+          <input
+            name="tokenInput"
+            id="tokenInput"
+            value={accessToken}
+            onChange={e => setAccessToken(e.target.value)}
+            ref={inputToken}
+          />
           <div className="container-fluid p-0">
             <div className="row custom-gutter">
               <div className="col-6">
