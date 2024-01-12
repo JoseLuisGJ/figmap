@@ -186,3 +186,44 @@ figma.ui.onmessage = msg => {
     });
   }
 };
+///////////////////
+// Figma payment //
+///////////////////
+
+// Force payment status to be unpaid for development
+type _PaymentStatus = {
+  type: "UNPAID" | "PAID";
+};
+const paymentStatus: _PaymentStatus = { type: "UNPAID" };
+figma.payments.setPaymentStatusInDevelopment(paymentStatus);
+//
+async function runPaymentDetect() {
+  if (figma.payments.status.type === "UNPAID") {
+    const usageCount = (await figma.clientStorage.getAsync("usage-count")) || 0;
+    const maxUsages = 15;
+    if (usageCount >= maxUsages) {
+      await figma.payments.initiateCheckoutAsync({
+        interstitial: "TRIAL_ENDED"
+      });
+      if (figma.payments.status.type === "UNPAID") {
+        figma.notify(
+          "You have run out of free usages of this plugin. Buy me a ☕️ to continue using it.",
+          {
+            timeout: 6000
+          }
+        );
+        figma.closePlugin();
+        return;
+      } else {
+        figma.notify("🎉 Thanks for purchasing it.");
+      }
+    } else {
+      await figma.clientStorage.setAsync("usage-count", usageCount + 1);
+      figma.notify("ℹ️ " + usageCount + "/" + maxUsages + " free trials.", {
+        timeout: 6000
+      });
+    }
+  }
+}
+
+runPaymentDetect();

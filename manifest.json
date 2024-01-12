@@ -6,5 +6,17 @@
   "ui": "dist/ui.html",
   "editorType": [
     "figma","figjam"
-  ]
+  ],
+  "permissions": ["payments"],
+  "networkAccess": { 
+    "allowedDomains": [
+      "https://api.mapbox.com",
+      "https://events.mapbox.com/",
+      "https://bam.eu01.nr-data.net",
+      "https://js-agent.newrelic.com",
+      "https://api-js.mixpanel.com",
+      "https://fonts.googleapis.com", 
+      "https://fonts.gstatic.com"
+      ] 
+    }
 }
