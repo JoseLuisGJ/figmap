@@ -64,7 +64,7 @@ const App = ({}) => {
   );
   const [mapboxStyle, setMapboxStyle] = useState("streets-v11");
   const [accessToken] = useState(
-    "pk.eyJ1IjoiZXJndW0iLCJhIjoiY2tnNnB1dzdnMTZzMTJybzVoY245bWs3biJ9.ZSHQTE9yUrMB6CPmEEEsfQ"
+    "pk.eyJ1IjoiZXJndW0iLCJhIjoiY2x1azN5bjRjMGxtMTJwcGh4dXkyd2dhbSJ9.sDX4rSQnzyZe152m-nuilg"
   );
 
   mixpanel.init("bb720f8aaaa0d68a225c4dc20cb584aa", {
