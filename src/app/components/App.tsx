@@ -63,36 +63,12 @@ const App = ({}) => {
     "ckg6ps8s62b5e19nrr67wqw9u"
   );
   const [mapboxStyle, setMapboxStyle] = useState("streets-v11");
-  const [accessToken] = useState(
-    "pk.eyJ1IjoiZXJndW0iLCJhIjoiY2x1azN5bjRjMGxtMTJwcGh4dXkyd2dhbSJ9.sDX4rSQnzyZe152m-nuilg"
-  );
+  const [accessToken] = useState(process.env.MAPBOX_TOKEN);
 
   mixpanel.init("bb720f8aaaa0d68a225c4dc20cb584aa", {
     disable_cookie: true,
     disable_persistence: true
   });
-  /*   const getUserId = async () => {
-    let userId = uuid();
-  
-    try {
-      const id = await figma.clientStorage.getAsync('userId')
-  
-      if (typeof id === 'undefined') {
-        figma.clientStorage.setAsync('userId', userId)
-      } else {
-        userId = id
-      }
-    } catch (e) {
-      console.error('userId retrieving error', e)
-      figma.clientStorage.setAsync('userId', userId)
-    }
-  
-    return userId
-  } */
-  // get or set if not yet set.
-  // const userId = await getUserId();
-  // send to iframe
-  // figma.ui.postMessage(userId)
 
   React.useEffect(() => {
     mixpanel.track("plugin-loaded");
