@@ -1,3 +1,4 @@
+figma.loadAllPagesAsync();
 const pluginWidth = 800;
 const pluginHeight = 560;
 const mapBoundary = 560;
@@ -8,6 +9,7 @@ const markerSVG: string = `<svg width="16" height="20" viewBox="0 0 16 20" fill=
 const allComponents = figma.root.findAll(c => c.type === "COMPONENT");
 const allComponentsName = allComponents.map(component => component.name);
 //console.log("==>", allComponentsName);
+
 figma.showUI(__html__, {
   width: pluginWidth,
   height: pluginHeight
