@@ -11,7 +11,6 @@
 	"dependencies": {
 		"@mapbox/mapbox-gl-geocoder": "^5.0.2",
 		"@math.gl/core": "^4.0.1",
-		"@math.gl/web-mercator": "^4.0.1",
 		"gpxparser": "^3.0.8",
 		"mapbox-gl": "^3.2.0",
 		"mixpanel-figma": "^2.0.1",

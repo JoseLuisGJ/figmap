@@ -2,9 +2,9 @@ import * as React from "react";
 import { useEffect, useRef } from "react";
 import Map from "react-map-gl/dist/es5/index";
 import { Marker } from "react-map-gl/dist/es5/index";
-// import Geocoder from "react-map-gl-geocoder";
 import GeocoderControl from "./geocoder-control";
-// import { WebMercatorViewport } from "react-map-gl";
+import WebMercatorViewport from "@math.gl/web-mercator";
+
 interface IMap {
   styleMode: string;
   viewState: any;
@@ -63,12 +63,13 @@ const MyMap: React.FC<IMap> = ({
   };
 
   const onviewStateChange = viewState => {
-    /*  const v = new WebMercatorViewport(viewport);
+    const v = new WebMercatorViewport(viewState);
     for (const marker of stateMarkers) {
       const [x, y] = v.project([marker.longitude, marker.latitude]);
       marker.x = x;
       marker.y = y;
-    } */
+    }
+
     setviewState(viewState);
   };
 

@@ -48,6 +48,7 @@ export default function GeocoderControl(props: GeocoderControlProps) {
           // @ts-ignore
           setMarker(
             <Marker
+              // @ts-ignore
               {...props.marker}
               longitude={location[0]}
               latitude={location[1]}
