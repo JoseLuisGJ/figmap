@@ -76,7 +76,6 @@ const MyMap: React.FC<IMap> = ({
     <div>
       <Map
         {...viewState}
-        dragPan={true}
         ref={mapRef}
         onLoad={onLoad}
         onMove={evt => setviewState(evt.viewState)}
@@ -99,13 +98,13 @@ const MyMap: React.FC<IMap> = ({
           marker={false}
         />  */}
         {/*  https://github.com/visgl/react-map-gl/blob/7.1-release/examples/terrain/src/app.tsx */}
-        {/*     <GeocoderControl
+        <GeocoderControl
           mapboxAccessToken={accessToken}
           position="top-right"
           // mapRef={mapRef}
-          // onViewportChange={handleGeocoderViewportChange} 
+          // onViewportChange={handleGeocoderViewportChange}
           marker={false}
-        /> */}
+        />
 
         {stateMarkers.map((localState, index) => (
           <Marker

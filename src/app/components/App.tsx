@@ -3,7 +3,7 @@ import { useState, useRef } from "react";
 import * as mixpanel from "mixpanel-figma";
 
 import "mapbox-gl/dist/mapbox-gl.css";
-// import "react-map-gl-geocoder/dist/mapbox-gl-geocoder.css";
+import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import "bootstrap/dist/css/bootstrap-grid.css";
 import "../styles/ui.css";
 
