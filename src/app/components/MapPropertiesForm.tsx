@@ -2,13 +2,13 @@ import * as React from "react";
 import { useEffect } from "react";
 
 interface IMap {
-  handleViewportChange: any;
-  viewport: any;
+  handleviewStateChange: any;
+  viewState: any;
 }
 
 const MapPropertiesForm: React.FC<IMap> = ({
-  viewport,
-  handleViewportChange
+  viewState,
+  handleviewStateChange
 }) => {
   useEffect(() => {});
 
@@ -27,14 +27,14 @@ const MapPropertiesForm: React.FC<IMap> = ({
                 max="85"
                 step="any"
                 name="latitude"
-                value={viewport.latitude}
+                value={viewState.latitude}
                 onChange={e => {
                   if (Number(e.target.value) > 85) {
-                    handleViewportChange(e, 85);
+                    handleviewStateChange(e, 85);
                   } else if (Number(e.target.value) < -85) {
-                    handleViewportChange(e, -85);
+                    handleviewStateChange(e, -85);
                   } else {
-                    handleViewportChange(e, e.target.value);
+                    handleviewStateChange(e, e.target.value);
                   }
                 }}
               />
@@ -48,14 +48,14 @@ const MapPropertiesForm: React.FC<IMap> = ({
                 max="180"
                 step="any"
                 name="longitude"
-                value={viewport.longitude}
+                value={viewState.longitude}
                 onChange={e => {
                   if (Number(e.target.value) > 180) {
-                    handleViewportChange(e, 180);
+                    handleviewStateChange(e, 180);
                   } else if (Number(e.target.value) < -180) {
-                    handleViewportChange(e, -180);
+                    handleviewStateChange(e, -180);
                   } else {
-                    handleViewportChange(e, e.target.value);
+                    handleviewStateChange(e, e.target.value);
                   }
                 }}
               />
@@ -76,14 +76,14 @@ const MapPropertiesForm: React.FC<IMap> = ({
                 max="22"
                 step="any"
                 name="zoom"
-                value={viewport.zoom}
+                value={viewState.zoom}
                 onChange={e => {
                   if (Number(e.target.value) > 22) {
-                    handleViewportChange(e, 22);
+                    handleviewStateChange(e, 22);
                   } else if (Number(e.target.value) < 0) {
-                    handleViewportChange(e, 0);
+                    handleviewStateChange(e, 0);
                   } else {
-                    handleViewportChange(e, e.target.value);
+                    handleviewStateChange(e, e.target.value);
                   }
                 }}
               />
@@ -97,14 +97,14 @@ const MapPropertiesForm: React.FC<IMap> = ({
                 max="60"
                 step="any"
                 name="pitch"
-                value={viewport.pitch}
+                value={viewState.pitch}
                 onChange={e => {
                   if (Number(e.target.value) > 60) {
-                    handleViewportChange(e, 60);
+                    handleviewStateChange(e, 60);
                   } else if (Number(e.target.value) < 0) {
-                    handleViewportChange(e, 0);
+                    handleviewStateChange(e, 0);
                   } else {
-                    handleViewportChange(e, e.target.value);
+                    handleviewStateChange(e, e.target.value);
                   }
                 }}
               />
@@ -118,14 +118,14 @@ const MapPropertiesForm: React.FC<IMap> = ({
                 max="180"
                 step="any"
                 name="bearing"
-                value={viewport.bearing}
+                value={viewState.bearing}
                 onChange={e => {
                   if (Number(e.target.value) > 180) {
-                    handleViewportChange(e, 180);
+                    handleviewStateChange(e, 180);
                   } else if (Number(e.target.value) < -180) {
-                    handleViewportChange(e, -180);
+                    handleviewStateChange(e, -180);
                   } else {
-                    handleViewportChange(e, e.target.value);
+                    handleviewStateChange(e, e.target.value);
                   }
                 }}
               />

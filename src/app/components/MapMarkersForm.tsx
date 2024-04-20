@@ -2,7 +2,7 @@ import * as React from "react";
 import { useEffect } from "react";
 import Dropzone from "react-dropzone";
 import gpxParser from "gpxParser";
-import { WebMercatorViewport } from "react-map-gl";
+// import { WebMercatorViewport } from "react-map-gl";
 import * as mixpanel from "mixpanel-figma";
 
 interface IMap {
@@ -10,17 +10,17 @@ interface IMap {
   figmaComponents: any;
   stateMarkers: any;
   setStateMarkers: any;
-  viewport: any;
-  handleViewportChangeFileLoaded: any;
+  viewState: any;
+  handleviewStateChangeFileLoaded: any;
 }
 
 const MapMarkerForm: React.FC<IMap> = ({
   setMarkerImg,
-  stateMarkers,
-  setStateMarkers,
+  // stateMarkers,
+  // setStateMarkers,
   figmaComponents,
-  viewport,
-  handleViewportChangeFileLoaded
+  viewState,
+  handleviewStateChangeFileLoaded
 }) => {
   useEffect(() => {
     parent.postMessage(
@@ -48,25 +48,25 @@ const MapMarkerForm: React.FC<IMap> = ({
         return;
       }
 
-      let nextViewport = {
-        ...viewport,
+      let nextviewState = {
+        ...viewState,
         latitude: Number(waypoints[0].lat),
         longitude: Number(waypoints[0].lon)
       };
-      const v = new WebMercatorViewport(nextViewport);
-      let newMarkers = waypoints.map(waypoint => {
-        const [x, y] = v.project([waypoint.lon, waypoint.lat]);
-        return {
-          longitude: waypoint.lon,
-          latitude: waypoint.lat,
-          x: x,
-          y: y,
-          name: waypoint.name,
-          icon: null
-        };
-      });
+      // const v = new WebMercatorviewState(nextviewState);
+      // let newMarkers = waypoints.map(waypoint => {
+      //   const [x, y] = v.project([waypoint.lon, waypoint.lat]);
+      //   return {
+      //     longitude: waypoint.lon,
+      //     latitude: waypoint.lat,
+      //     x: x,
+      //     y: y,
+      //     name: waypoint.name,
+      //     icon: null
+      //   };
+      // });
 
-      setStateMarkers(stateMarkers.concat(newMarkers));
+      // setStateMarkers(stateMarkers.concat(newMarkers));
       parent.postMessage(
         {
           pluginMessage: {
@@ -75,9 +75,9 @@ const MapMarkerForm: React.FC<IMap> = ({
         },
         "*"
       );
-      handleViewportChangeFileLoaded(
-        nextViewport.latitude,
-        nextViewport.longitude
+      handleviewStateChangeFileLoaded(
+        nextviewState.latitude,
+        nextviewState.longitude
       );
     };
 

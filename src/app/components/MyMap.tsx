@@ -1,30 +1,31 @@
 import * as React from "react";
-import { useCallback, useEffect, useRef } from "react";
-import ReactMapGL from "react-map-gl";
-import { Marker } from "react-map-gl";
-import Geocoder from "react-map-gl-geocoder";
-import { WebMercatorViewport } from "react-map-gl";
+import { useEffect, useRef } from "react";
+import Map from "react-map-gl/dist/es5/index";
+import { Marker } from "react-map-gl/dist/es5/index";
+// import Geocoder from "react-map-gl-geocoder";
+import GeocoderControl from "./geocoder-control";
+// import { WebMercatorViewport } from "react-map-gl";
 interface IMap {
-  styleMode: String;
-  viewport: any;
-  accessToken: String;
-  username: String;
-  customStyleID: String;
-  mapboxStyle: String;
-  setViewport: any;
+  styleMode: string;
+  viewState: any;
+  accessToken: string;
+  username: string;
+  customStyleID: string;
+  mapboxStyle: string;
+  setviewState: any;
   stateMarkers: any;
   setStateMarkers: any;
   mapMode: any;
 }
 
-const Map: React.FC<IMap> = ({
+const MyMap: React.FC<IMap> = ({
   styleMode,
-  viewport,
+  viewState,
   accessToken,
   username,
   customStyleID,
   mapboxStyle,
-  setViewport,
+  setviewState,
   stateMarkers,
   setStateMarkers,
   mapMode
@@ -34,14 +35,14 @@ const Map: React.FC<IMap> = ({
 
   useEffect(() => {});
 
-  const handleGeocoderViewportChange = useCallback(newViewport => {
+  /*   const handleGeocoderViewportChange = useCallback(newViewport => {
     const geocoderDefaultOverrides = { transitionDuration: 1000 };
 
     return setViewport({
       ...newViewport,
       ...geocoderDefaultOverrides
     });
-  }, []);
+  }, []); */
 
   const onLoad = () => {
     //console.log("=>", markerRef);
@@ -61,24 +62,26 @@ const Map: React.FC<IMap> = ({
     }
   };
 
-  const onViewportChange = viewport => {
-    const v = new WebMercatorViewport(viewport);
+  const onviewStateChange = viewState => {
+    /*  const v = new WebMercatorViewport(viewport);
     for (const marker of stateMarkers) {
       const [x, y] = v.project([marker.longitude, marker.latitude]);
       marker.x = x;
       marker.y = y;
-    }
-    setViewport(viewport);
+    } */
+    setviewState(viewState);
   };
 
   return (
     <div>
-      <ReactMapGL
-        {...viewport}
+      <Map
+        {...viewState}
+        dragPan={true}
         ref={mapRef}
         onLoad={onLoad}
-        onViewportChange={nextViewport => onViewportChange(nextViewport)}
-        mapboxApiAccessToken={accessToken}
+        onMove={evt => setviewState(evt.viewState)}
+        onviewStateChange={nextviewState => onviewStateChange(nextviewState)}
+        mapboxAccessToken={accessToken}
         mapStyle={`mapbox://styles/${
           styleMode == "customMapboxStyle" ? username : "mapbox"
         }/${styleMode == "customMapboxStyle" ? customStyleID : mapboxStyle}`}
@@ -88,27 +91,36 @@ const Map: React.FC<IMap> = ({
         onClick={e => mapClicked(e)}
         getCursor={() => (mapMode === "styles" ? "grab" : "crosshair")}
       >
-        <Geocoder
+        {/* <Geocoder
           mapRef={mapRef}
           onViewportChange={handleGeocoderViewportChange}
           mapboxApiAccessToken={accessToken}
           position="top-right"
           marker={false}
-        />
+        />  */}
+        {/*  https://github.com/visgl/react-map-gl/blob/7.1-release/examples/terrain/src/app.tsx */}
+        {/*     <GeocoderControl
+          mapboxAccessToken={accessToken}
+          position="top-right"
+          // mapRef={mapRef}
+          // onViewportChange={handleGeocoderViewportChange} 
+          marker={false}
+        /> */}
+
         {stateMarkers.map((localState, index) => (
           <Marker
             ref={markerRef || index}
             key={index}
-            offsetTop={-10}
-            offsetLeft={-10}
+            // offsetTop={-10}
+            // offsetLeft={-10}
             latitude={localState.latitude}
             longitude={localState.longitude}
           >
             <img src={require("../assets/markers-icon.svg")} />
           </Marker>
         ))}
-      </ReactMapGL>
+      </Map>
     </div>
   );
 };
-export default Map;
+export default MyMap;

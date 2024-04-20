@@ -7,7 +7,7 @@ interface IMap {
   styleMode: any;
   customStyleID: any;
   mapboxStyle: any;
-  viewport: any;
+  viewState: any;
   mapExportWidth: any;
   mapExportHeight: any;
   isRetina: any;
@@ -22,7 +22,7 @@ const DrawMap: React.FC<IMap> = ({
   styleMode,
   customStyleID,
   mapboxStyle,
-  viewport,
+  viewState,
   mapExportWidth,
   mapExportHeight,
   isRetina,
@@ -40,9 +40,9 @@ const DrawMap: React.FC<IMap> = ({
       styleMode == "customMapboxStyle" ? username : "mapbox"
     }/${
       styleMode == "customMapboxStyle" ? customStyleID : mapboxStyle
-    }/static/${viewport.longitude},${viewport.latitude},${viewport.zoom},${
-      viewport.bearing
-    },${viewport.pitch}/${mapExportWidth}x${mapExportHeight}${
+    }/static/${viewState.longitude},${viewState.latitude},${viewState.zoom},${
+      viewState.bearing
+    },${viewState.pitch}/${mapExportWidth}x${mapExportHeight}${
       isRetina ? "@2x" : ""
     }?access_token=${accessToken}&attribution=false&logo=false`;
     fetch(imurl)

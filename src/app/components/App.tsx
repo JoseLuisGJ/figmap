@@ -3,11 +3,11 @@ import { useState, useRef } from "react";
 import * as mixpanel from "mixpanel-figma";
 
 import "mapbox-gl/dist/mapbox-gl.css";
-import "react-map-gl-geocoder/dist/mapbox-gl-geocoder.css";
+// import "react-map-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import "bootstrap/dist/css/bootstrap-grid.css";
 import "../styles/ui.css";
 
-import Map from "./Map";
+import MyMap from "./MyMap";
 import MapStylesForm from "./MapStylesForm";
 import MapPropertiesForm from "./MapPropertiesForm";
 import ImageSizeForm from "./ImageSizeForm";
@@ -29,7 +29,7 @@ const App = ({}) => {
   const [stateMarkers, setStateMarkers] = useState([]);
   const [markerImg, setMarkerImg] = useState(1);
 
-  let [viewport, setViewport] = useState({
+  let [viewState, setviewState] = useState({
     longitude: -77.03968,
     latitude: 38.89744,
     zoom: 8,
@@ -38,15 +38,15 @@ const App = ({}) => {
     width: 560,
     height: 560
   });
-  const handleViewportChange = (e, value) => {
-    setViewport({
-      ...viewport,
+  const handleviewStateChange = (e, value) => {
+    setviewState({
+      ...viewState,
       [e.target.name]: Number(value)
     });
   };
-  const handleViewportChangeFileLoaded = (lat, lon) => {
-    setViewport({
-      ...viewport,
+  const handleviewStateChangeFileLoaded = (lat, lon) => {
+    setviewState({
+      ...viewState,
       latitude: Number(lat),
       longitude: Number(lon)
     });
@@ -152,14 +152,14 @@ const App = ({}) => {
   return (
     <div className="main-wrapper">
       <div className="map-wrapper">
-        <Map
+        <MyMap
           styleMode={styleMode}
-          viewport={viewport}
+          viewState={viewState}
           accessToken={accessToken}
           username={username}
           customStyleID={customStyleID}
           mapboxStyle={mapboxStyle}
-          setViewport={setViewport}
+          setviewState={setviewState}
           stateMarkers={stateMarkers}
           setStateMarkers={setStateMarkers}
           mapMode={mapMode}
@@ -207,8 +207,8 @@ const App = ({}) => {
             />
             <hr />
             <MapPropertiesForm
-              viewport={viewport}
-              handleViewportChange={handleViewportChange}
+              viewState={viewState}
+              handleviewStateChange={handleviewStateChange}
             />
             <hr />
             <ImageSizeForm
@@ -227,8 +227,8 @@ const App = ({}) => {
               setMarkerImg={setMarkerImg}
               stateMarkers={stateMarkers}
               setStateMarkers={setStateMarkers}
-              viewport={viewport}
-              handleViewportChangeFileLoaded={handleViewportChangeFileLoaded}
+              viewState={viewState}
+              handleviewStateChangeFileLoaded={handleviewStateChangeFileLoaded}
             />
           </>
         )}
@@ -237,7 +237,7 @@ const App = ({}) => {
           styleMode={styleMode}
           customStyleID={customStyleID}
           mapboxStyle={mapboxStyle}
-          viewport={viewport}
+          viewState={viewState}
           mapExportWidth={mapExportWidth}
           mapExportHeight={mapExportHeight}
           isRetina={isRetina}
