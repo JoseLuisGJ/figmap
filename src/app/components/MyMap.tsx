@@ -100,7 +100,7 @@ const MyMap: React.FC<IMap> = ({
         height="100%"
         preventStyleDiffing={true}
         onClick={e => mapClicked(e)}
-        getCursor={() => (mapMode === "styles" ? "grab" : "crosshair")}
+        cursor={mapMode === "styles" ? "grab" : "crosshair"}
         projection={"mercator"}
       >
         {/*  https://github.com/visgl/react-map-gl/blob/7.1-release/examples/terrain/src/app.tsx */}
