@@ -16,6 +16,8 @@ interface IMap {
   stateMarkers: any;
   setStateMarkers: any;
   mapMode: any;
+  mapExportWidth: any;
+  mapExportHeight: any;
 }
 
 const MyMap: React.FC<IMap> = ({
@@ -28,7 +30,9 @@ const MyMap: React.FC<IMap> = ({
   setviewState,
   stateMarkers,
   setStateMarkers,
-  mapMode
+  mapMode,
+  mapExportWidth,
+  mapExportHeight
 }) => {
   const mapRef = useRef();
   const markerRef = useRef();
@@ -49,28 +53,36 @@ const MyMap: React.FC<IMap> = ({
   };
   const mapClicked = e => {
     if (mapMode === "markers") {
+      //  console.log(JSON.stringify(e.point), e.lngLat.lat, e.lngLat.lng);
       const newMarker = stateMarkers.concat({
-        latitude: e.lngLat[1],
-        longitude: e.lngLat[0],
-        x: e.point[0],
-        y: e.point[1],
+        latitude: e.lngLat.lat,
+        longitude: e.lngLat.lng,
+        x: e.point.x,
+        y: e.point.y,
         icon: null
       });
       setStateMarkers(newMarker);
-      //console.log(JSON.stringify(e.point), e.lngLat[0], e.lngLat[1], markerID);
       //console.log("mapClicked =>", stateMarkers);
     }
   };
 
-  const onviewStateChange = viewState => {
-    const v = new WebMercatorViewport(viewState);
+  const onMapMove = e => {
+    // TODO review when pitch and bearing are not 0, the markers are not in the correct position
+    console.log("--ñ", e);
+    let viewport = new WebMercatorViewport({
+      ...e.viewState,
+      width: mapExportHeight - 30,
+      height: mapExportHeight - 30
+    });
+    console.log("--v", viewport);
     for (const marker of stateMarkers) {
-      const [x, y] = v.project([marker.longitude, marker.latitude]);
-      marker.x = x;
-      marker.y = y;
+      let projection = viewport.project([marker.longitude, marker.latitude]);
+      // console.log("--->",projection,marker.longitude, marker.latitude)
+      marker.x = projection[0];
+      marker.y = projection[1];
     }
 
-    setviewState(viewState);
+    setviewState(e.viewState);
   };
 
   return (
@@ -79,8 +91,7 @@ const MyMap: React.FC<IMap> = ({
         {...viewState}
         ref={mapRef}
         onLoad={onLoad}
-        onMove={evt => setviewState(evt.viewState)}
-        onviewStateChange={nextviewState => onviewStateChange(nextviewState)}
+        onMove={e => onMapMove(e)}
         mapboxAccessToken={accessToken}
         mapStyle={`mapbox://styles/${
           styleMode == "customMapboxStyle" ? username : "mapbox"
@@ -90,14 +101,8 @@ const MyMap: React.FC<IMap> = ({
         preventStyleDiffing={true}
         onClick={e => mapClicked(e)}
         getCursor={() => (mapMode === "styles" ? "grab" : "crosshair")}
+        projection={"mercator"}
       >
-        {/* <Geocoder
-          mapRef={mapRef}
-          onViewportChange={handleGeocoderViewportChange}
-          mapboxApiAccessToken={accessToken}
-          position="top-right"
-          marker={false}
-        />  */}
         {/*  https://github.com/visgl/react-map-gl/blob/7.1-release/examples/terrain/src/app.tsx */}
         <GeocoderControl
           mapboxAccessToken={accessToken}

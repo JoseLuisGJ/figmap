@@ -163,6 +163,8 @@ const App = ({}) => {
           stateMarkers={stateMarkers}
           setStateMarkers={setStateMarkers}
           mapMode={mapMode}
+          mapExportWidth={mapExportWidth}
+          mapExportHeight={mapExportHeight}
         />
       </div>
       <div className="side-panel">
