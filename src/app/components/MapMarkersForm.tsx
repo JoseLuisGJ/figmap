@@ -2,7 +2,7 @@ import * as React from "react";
 import { useEffect } from "react";
 import Dropzone from "react-dropzone";
 import gpxParser from "gpxParser";
-// import { WebMercatorViewport } from "react-map-gl";
+import WebMercatorViewport from "@math.gl/web-mercator";
 import * as mixpanel from "mixpanel-figma";
 
 interface IMap {
@@ -16,8 +16,8 @@ interface IMap {
 
 const MapMarkerForm: React.FC<IMap> = ({
   setMarkerImg,
-  // stateMarkers,
-  // setStateMarkers,
+  stateMarkers,
+  setStateMarkers,
   figmaComponents,
   viewState,
   handleviewStateChangeFileLoaded
@@ -53,20 +53,21 @@ const MapMarkerForm: React.FC<IMap> = ({
         latitude: Number(waypoints[0].lat),
         longitude: Number(waypoints[0].lon)
       };
-      // const v = new WebMercatorviewState(nextviewState);
-      // let newMarkers = waypoints.map(waypoint => {
-      //   const [x, y] = v.project([waypoint.lon, waypoint.lat]);
-      //   return {
-      //     longitude: waypoint.lon,
-      //     latitude: waypoint.lat,
-      //     x: x,
-      //     y: y,
-      //     name: waypoint.name,
-      //     icon: null
-      //   };
-      // });
 
-      // setStateMarkers(stateMarkers.concat(newMarkers));
+      const v = new WebMercatorViewport(nextviewState);
+      let newMarkers = waypoints.map(waypoint => {
+        const [x, y] = v.project([waypoint.lon, waypoint.lat]);
+        return {
+          longitude: waypoint.lon,
+          latitude: waypoint.lat,
+          x: x,
+          y: y,
+          name: waypoint.name,
+          icon: null
+        };
+      });
+
+      setStateMarkers(stateMarkers.concat(newMarkers));
       parent.postMessage(
         {
           pluginMessage: {

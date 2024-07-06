@@ -31,22 +31,13 @@ const MyMap: React.FC<IMap> = ({
   stateMarkers,
   setStateMarkers,
   mapMode,
-  mapExportWidth,
+  // mapExportWidth,
   mapExportHeight
 }) => {
   const mapRef = useRef();
   const markerRef = useRef();
 
   useEffect(() => {});
-
-  /*   const handleGeocoderViewportChange = useCallback(newViewport => {
-    const geocoderDefaultOverrides = { transitionDuration: 1000 };
-
-    return setViewport({
-      ...newViewport,
-      ...geocoderDefaultOverrides
-    });
-  }, []); */
 
   const onLoad = () => {
     //console.log("=>", markerRef);
@@ -67,8 +58,6 @@ const MyMap: React.FC<IMap> = ({
   };
 
   const onMapMove = e => {
-    // TODO review when pitch and bearing are not 0, the markers are not in the correct position
-    console.log("--ñ", e);
     let viewport = new WebMercatorViewport({
       ...e.viewState,
       width: mapExportHeight - 30,
@@ -77,7 +66,6 @@ const MyMap: React.FC<IMap> = ({
     console.log("--v", viewport);
     for (const marker of stateMarkers) {
       let projection = viewport.project([marker.longitude, marker.latitude]);
-      // console.log("--->",projection,marker.longitude, marker.latitude)
       marker.x = projection[0];
       marker.y = projection[1];
     }
@@ -101,8 +89,26 @@ const MyMap: React.FC<IMap> = ({
         preventStyleDiffing={true}
         onClick={e => mapClicked(e)}
         cursor={mapMode === "styles" ? "grab" : "crosshair"}
-        projection={"mercator"}
+        projection="mercator" // "mercator" or "globe"
+        maxPitch={60}
+        /*      terrain={{source: 'mapbox-dem', exaggeration: 5.5}}
+        fog={{
+          range: [0.8, 8],
+          color: "#9FBBDC",
+          "horizon-blend": 0.5,
+          // "high-color": "#245bde",
+          "space-color": "#000000",
+          "star-intensity": 0.15,
+        }} */
       >
+        {/* This source is rendered but it's not generated using the Static Image API https://docs.mapbox.com/style-spec/reference/layers/ */}
+        {/*        <Source
+          id="mapbox-dem"
+          type="raster-dem"
+          url="mapbox://mapbox.mapbox-terrain-dem-v1"
+          tileSize={512}
+          maxzoom={14}
+        /> */}
         {/*  https://github.com/visgl/react-map-gl/blob/7.1-release/examples/terrain/src/app.tsx */}
         <GeocoderControl
           mapboxAccessToken={accessToken}
