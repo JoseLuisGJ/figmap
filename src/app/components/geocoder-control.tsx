@@ -32,7 +32,7 @@ export default function GeocoderControl({
   ...props
 }: GeocoderControlProps) {
   const [markerState, setMarker] = useState(null);
-  const geocoder = useControl<MapboxGeocoder>(
+  useControl<MapboxGeocoder>(
     () => {
       const ctrl = new MapboxGeocoder({
         ...props,

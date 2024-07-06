@@ -63,7 +63,7 @@ const MyMap: React.FC<IMap> = ({
       width: mapExportHeight - 30,
       height: mapExportHeight - 30
     });
-    console.log("--v", viewport);
+    //console.log("--v", viewport);
     for (const marker of stateMarkers) {
       let projection = viewport.project([marker.longitude, marker.latitude]);
       marker.x = projection[0];
