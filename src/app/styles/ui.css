@@ -183,6 +183,10 @@ hr {
   box-shadow: none;
   font-family: "Roboto";
 }
+
+.mapboxgl-ctrl-bottom-right {
+  display: none;
+}
 .side-panel__tabs {
   padding-top: 14px;
   padding-bottom: 6px;
