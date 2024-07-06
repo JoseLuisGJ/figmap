@@ -91,47 +91,53 @@ const App = ({}) => {
 
     // This is how we read messages sent from the plugin controller
     window.onmessage = event => {
-      const { type, message, storage } = event.data.pluginMessage;
-      if (type === "map-drawed") {
-        console.log(`Figma Says: ${message}`);
-      }
-      if (type === "components-response") {
-        setFigmaComponents(message);
-      }
-      if (type === "sending-editor") {
-        setEditor(storage);
-      }
+      if (
+        event.data &&
+        event.data.pluginMessage &&
+        typeof event.data.pluginMessage === "object"
+      ) {
+        const { type, message, storage } = event.data.pluginMessage;
+        if (type === "map-drawed") {
+          console.log(`Figma Says: ${message}`);
+        }
+        if (type === "components-response") {
+          setFigmaComponents(message);
+        }
+        if (type === "sending-editor") {
+          setEditor(storage);
+        }
 
-      let notifyStorage = false;
-      if (
-        type === "fetched username" &&
-        storage != undefined &&
-        storage != "ergum"
-      ) {
-        setUsername(storage);
-        console.log("setUsername --->", storage);
-        notifyStorage = true;
-      }
-      if (
-        type === "fetched custom style" &&
-        storage != undefined &&
-        storage != "ckg6ps8s62b5e19nrr67wqw9u"
-      ) {
-        setCustomStyleID(storage);
-        console.log("setCustomStyleID --->", storage);
-        notifyStorage = true;
-      }
-      if (notifyStorage) {
-        parent.postMessage(
-          {
-            pluginMessage: {
-              type: "notify-storage",
-              user: username,
-              style: customStyleID
-            }
-          },
-          "*"
-        );
+        let notifyStorage = false;
+        if (
+          type === "fetched username" &&
+          storage != undefined &&
+          storage != "ergum"
+        ) {
+          setUsername(storage);
+          console.log("setUsername --->", storage);
+          notifyStorage = true;
+        }
+        if (
+          type === "fetched custom style" &&
+          storage != undefined &&
+          storage != "ckg6ps8s62b5e19nrr67wqw9u"
+        ) {
+          setCustomStyleID(storage);
+          console.log("setCustomStyleID --->", storage);
+          notifyStorage = true;
+        }
+        if (notifyStorage) {
+          parent.postMessage(
+            {
+              pluginMessage: {
+                type: "notify-storage",
+                user: username,
+                style: customStyleID
+              }
+            },
+            "*"
+          );
+        }
       }
     };
   }, []);

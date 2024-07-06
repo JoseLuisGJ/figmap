@@ -14,8 +14,8 @@
 		"gpxparser": "^3.0.8",
 		"mapbox-gl": "^3.2.0",
 		"mixpanel-figma": "^2.0.1",
-		"react": "^16.13.1",
-		"react-dom": "^16.13.1",
+		"react": "^18.3.1",
+		"react-dom": "^18.3.1",
 		"react-dropzone": "^14.2.2",
 		"viewport-mercator-project": "^7.0.1"
 	},
@@ -45,10 +45,10 @@
 		"webpack": "^4.41.4",
 		"webpack-cli": "^3.3.6"
 	},
-	"engines" : { 
-    "npm" : ">=8.19.4 <10.5.2",
-    "node" : ">=18.20.2 <20.12.2"
-  },
+	"engines": {
+		"npm": ">=8.19.4 <10.5.2",
+		"node": ">=18.20.2 <20.12.2"
+	},
 	"husky": {
 		"hooks": {
 			"pre-commit": "lint-staged"
