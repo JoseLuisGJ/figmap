@@ -19,12 +19,16 @@ declare function require(path: string): any;
 const App = ({}) => {
   const inputUsername = useRef(null);
   const inputStyleID = useRef(null);
+  const inputToken = useRef(null);
+  const [firstRenderMap, setFirstRenderMap] = useState(true);
+  const [renderMap, setRenderMap] = useState(true);
 
   const [figmaComponents, setFigmaComponents] = useState([]);
   const [editor, setEditor] = useState("figma");
 
   const [mapMode, setMapMode] = useState("styles"); // styles or markers
   const [styleMode, setStyleMode] = useState("mapboxStyle"); // mapboxStyle or customMapboxStyle
+  const [customToken, setCustomToken] = useState(false);
 
   const [stateMarkers, setStateMarkers] = useState([]);
   const [markerImg, setMarkerImg] = useState(1);
@@ -63,7 +67,7 @@ const App = ({}) => {
     "ckg6ps8s62b5e19nrr67wqw9u"
   );
   const [mapboxStyle, setMapboxStyle] = useState("streets-v11");
-  const [accessToken] = useState(process.env.MAPBOX_TOKEN);
+  const [accessToken, setAccessToken] = useState(process.env.MAPBOX_TOKEN);
 
   mixpanel.init("bb720f8aaaa0d68a225c4dc20cb584aa", {
     disable_cookie: true,
@@ -126,13 +130,23 @@ const App = ({}) => {
           console.log("setCustomStyleID --->", storage);
           notifyStorage = true;
         }
+        if (
+          type === "fetched custom access token" &&
+          storage != undefined &&
+          storage != process.env.MAPBOX_TOKEN
+        ) {
+          setAccessToken(storage);
+          console.log("setAccessToken --->", storage);
+          notifyStorage = true;
+        }
         if (notifyStorage) {
           parent.postMessage(
             {
               pluginMessage: {
                 type: "notify-storage",
                 user: username,
-                style: customStyleID
+                style: customStyleID,
+                accessToken: accessToken
               }
             },
             "*"
@@ -143,6 +157,12 @@ const App = ({}) => {
   }, []);
 
   React.useEffect(() => {
+    if (username == "") {
+      setUsername("ergum");
+    }
+    if (customStyleID == "") {
+      setCustomStyleID("ckg6ps8s62b5e19nrr67wqw9u");
+    }
     parent.postMessage(
       {
         pluginMessage: {
@@ -155,23 +175,56 @@ const App = ({}) => {
     );
   }, [username, customStyleID]);
 
+  React.useEffect(() => {
+    if (!firstRenderMap) {
+      setCustomToken(true);
+      if (accessToken == "" || accessToken == undefined) {
+        setAccessToken(process.env.MAPBOX_TOKEN);
+      }
+      setRenderMap(false);
+      // if accessToken has more than 80 characters
+      if (accessToken.length > 80) {
+        setTimeout(() => {
+          setRenderMap(true);
+        }, 500);
+      }
+    }
+    setFirstRenderMap(false);
+  }, [accessToken]);
+
+  const updateTokenStorage = () => {
+    parent.postMessage(
+      {
+        pluginMessage: {
+          type: "update-accessToken-storage",
+          accessToken: accessToken
+        }
+      },
+      "*"
+    );
+  };
+
   return (
     <div className="main-wrapper">
       <div className="map-wrapper">
-        <MyMap
-          styleMode={styleMode}
-          viewState={viewState}
-          accessToken={accessToken}
-          username={username}
-          customStyleID={customStyleID}
-          mapboxStyle={mapboxStyle}
-          setviewState={setviewState}
-          stateMarkers={stateMarkers}
-          setStateMarkers={setStateMarkers}
-          mapMode={mapMode}
-          mapExportWidth={mapExportWidth}
-          mapExportHeight={mapExportHeight}
-        />
+        {renderMap ? (
+          <MyMap
+            styleMode={styleMode}
+            viewState={viewState}
+            accessToken={accessToken}
+            username={username}
+            customStyleID={customStyleID}
+            mapboxStyle={mapboxStyle}
+            setviewState={setviewState}
+            stateMarkers={stateMarkers}
+            setStateMarkers={setStateMarkers}
+            mapMode={mapMode}
+            mapExportWidth={mapExportWidth}
+            mapExportHeight={mapExportHeight}
+            customToken={customToken}
+            updateTokenStorage={updateTokenStorage}
+          />
+        ) : null}
       </div>
       <div className="side-panel">
         <div className="form-block side-panel__tabs">
@@ -212,6 +265,11 @@ const App = ({}) => {
               setCustomStyleID={setCustomStyleID}
               setMapboxStyle={setMapboxStyle}
               setStyleMode={setStyleMode}
+              setAccessToken={setAccessToken}
+              inputToken={inputToken}
+              accessToken={
+                accessToken != process.env.MAPBOX_TOKEN ? accessToken : ""
+              }
             />
             <hr />
             <MapPropertiesForm

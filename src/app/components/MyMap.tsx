@@ -18,6 +18,8 @@ interface IMap {
   mapMode: any;
   mapExportWidth: any;
   mapExportHeight: any;
+  customToken: any;
+  updateTokenStorage: any;
 }
 
 const MyMap: React.FC<IMap> = ({
@@ -32,7 +34,9 @@ const MyMap: React.FC<IMap> = ({
   setStateMarkers,
   mapMode,
   // mapExportWidth,
-  mapExportHeight
+  mapExportHeight,
+  customToken,
+  updateTokenStorage
 }) => {
   const mapRef = useRef();
   const markerRef = useRef();
@@ -40,6 +44,9 @@ const MyMap: React.FC<IMap> = ({
   useEffect(() => {});
 
   const onLoad = () => {
+    if (customToken) {
+      updateTokenStorage();
+    }
     //console.log("=>", markerRef);
   };
   const mapClicked = e => {
@@ -88,8 +95,9 @@ const MyMap: React.FC<IMap> = ({
         height="100%"
         preventStyleDiffing={true}
         onClick={e => mapClicked(e)}
+        onError={evt => console.error(evt.error)}
         cursor={mapMode === "styles" ? "grab" : "crosshair"}
-        projection="mercator" // "mercator" or "globe"
+        // projection="mercator" // "mercator" or "globe"
         maxPitch={60}
         /*      terrain={{source: 'mapbox-dem', exaggeration: 5.5}}
         fog={{
